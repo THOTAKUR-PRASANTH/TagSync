@@ -1,15 +1,9 @@
 'use client'
-import Link from 'next/link'
 import SocialSignUp from '../SocialSignUp'
 import Logo from '../../layout/header/logo'
 import PreLoader from '../../shared/PreLoader'
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-
-// 1. REMOVED the old import
-// import { supabase } from "../../../lib/supabaseClient";
-
-// 2. ADDED the correct import for client-side components
 import { createClient } from "@/utils/supabase/client";
 
 const SignUp = () => {
@@ -19,8 +13,6 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
-  // 3. Created the client using the new utility
   const supabase = createClient();
 
   const handleSignup = async (e: React.FormEvent) => {
@@ -40,12 +32,64 @@ const SignUp = () => {
       return;
     }
 
-    const { error } = await supabase.auth.signUp({ email, password });
+    try {
+      // ✅ Step 1: Check if email already exists in user_details
+      const { data: existingUser, error: checkError } = await supabase
+        .from("user_details")
+        .select("id")
+        .eq("email", email)
+        .maybeSingle();
 
-    if (error) setError(error.message);
-    else router.push("/verify-email"); 
+      if (checkError) {
+        console.error("Error checking email:", checkError);
+        setError("Something went wrong while checking email.");
+        setLoading(false);
+        return;
+      }
 
-    setLoading(false);
+      if (existingUser) {
+        setError("This email is already registered. Please log in instead.");
+        setLoading(false);
+        return;
+      }
+
+      // ✅ Step 2: Proceed with Supabase Auth signup
+      const { data, error } = await supabase.auth.signUp({ email, password });
+
+      if (error) {
+        setError(error.message);
+        setLoading(false);
+        return;
+      }
+
+      // ✅ Step 3: Insert into user_details if user created
+      if (data?.user) {
+        const { error: detailsError } = await supabase.from("user_details").insert([
+          {
+            user_id: data.user.id,
+            name,
+            email,
+            phone: null,
+            address: null,
+            age: null,
+            gender: null,
+          },
+        ]);
+
+        if (detailsError) {
+          console.error("Details Insert Error:", detailsError);
+          setError("Failed to save user details.");
+          setLoading(false);
+          return;
+        }
+      }
+      router.push("/verify-email");
+    } catch (err: any) {
+      console.error("Unexpected error:", err);
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -71,7 +115,7 @@ const SignUp = () => {
             onChange={(e) => setName(e.target.value)}
             name='name'
             required
-            className='w-full rounded-md border border-white/20 border-solid bg-transparent px-5 py-3 text-base text-dark outline-hidden transition placeholder:text-grey focus:border-primary focus-visible:shadow-none text-white'
+            className='w-full rounded-md border border-white/20 bg-transparent px-5 py-3 text-base text-white placeholder:text-grey focus:border-primary focus:outline-none'
           />
         </div>
         <div className='mb-[22px]'>
@@ -82,10 +126,9 @@ const SignUp = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className='w-full rounded-md border border-white/20 border-solid bg-transparent px-5 py-3 text-base text-dark outline-hidden transition placeholder:text-grey focus:border-primary focus-visible:shadow-none text-white'
+            className='w-full rounded-md border border-white/20 bg-transparent px-5 py-3 text-base text-white placeholder:text-grey focus:border-primary focus:outline-none'
           />
         </div>
-        {loading && <PreLoader />}
         <div className='mb-[22px]'>
           <input
             type='password'
@@ -94,21 +137,24 @@ const SignUp = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className='w-full rounded-md border border-white/20 border-solid bg-transparent px-5 py-3 text-base text-dark outline-hidden transition placeholder:text-grey focus:border-primary focus-visible:shadow-none text-white'
+            className='w-full rounded-md border border-white/20 bg-transparent px-5 py-3 text-base text-white placeholder:text-grey focus:border-primary focus:outline-none'
           />
         </div>
+
+        {loading && <PreLoader />}
+
         <div className='mb-9'>
           <button
             type='submit'
             disabled={loading}
-            className='flex w-full items-center text-lg text-white font-medium justify-center rounded-md bg-primary px-5 py-3 transition duration-300 ease-in-out hover:bg-transparent hover:text-primary border-primary border cursor-pointer disabled:opacity-50'>
+            className='flex w-full items-center justify-center rounded-md bg-primary px-5 py-3 text-lg font-medium text-white transition duration-300 ease-in-out hover:bg-transparent hover:text-primary border border-primary cursor-pointer disabled:opacity-50'>
             {loading ? 'Signing Up...' : 'Sign Up'}
           </button>
         </div>
       </form>
 
       <p className='text-body-secondary mb-4 text-white text-base'>
-        By creating an account you are agree with our{' '}
+        By creating an account you agree with our{' '}
         <a href='/#' className='text-primary hover:underline'>
           Privacy
         </a>{' '}

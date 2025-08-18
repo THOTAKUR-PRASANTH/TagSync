@@ -1,5 +1,5 @@
 import { createClient } from '@/utils/supabase/server';
-import DashboardClient from './dashboardClient'; // The UI part
+import DashboardClient from './dashboardClient'; 
 
 export default async function DashboardPage() {
   const supabase = await createClient();

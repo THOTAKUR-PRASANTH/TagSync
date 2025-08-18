@@ -2,14 +2,12 @@
 
 import { Inter } from 'next/font/google';
 import './globals.css';
-// import Aoscompo from '@/lib/utils/aos';
 import ScrollToTop from './components/scroll-to-top';
 import Header from './components/layout/header';
 import Footer from './components/layout/footer';
 import { useState, useEffect } from 'react';
 import PreLoader from './components/shared/PreLoader';
 import { usePathname } from "next/navigation";
-
 
 const font = Inter({ subsets: ['latin'] });
 
@@ -20,7 +18,14 @@ export default function RootLayout({
 }>) {
   const [loading, setLoading] = useState(true);
   const pathname = usePathname();
-  const isPrivate = pathname.startsWith("/Server");
+
+  const noLayoutRoutes = [
+    '/verify-email',
+    '/not-found',      
+  ];
+
+  const showLayout = !noLayoutRoutes.includes(pathname) && !pathname.startsWith("/Server");
+
 
   useEffect(() => {
     const hideLoader = () => {
@@ -47,9 +52,9 @@ export default function RootLayout({
           <PreLoader />
         ) : (
           <>
-            {!isPrivate && <Header />}
+            {showLayout && <Header />}
             {children}
-            {!isPrivate && <Footer />}
+            {showLayout && <Footer />}
           </>
         )}
         <ScrollToTop />

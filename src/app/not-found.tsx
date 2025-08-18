@@ -1,18 +1,15 @@
 
 import { Metadata } from "next";
-import HeroSub from "./components/shared/hero-sub";
 import NotFound from "./components/not-found";
 
 export const metadata: Metadata = {
-  title: "404 Page | Venus ",
+  title: "404 Page Not Found",
+  description: "The page you are looking for does not exist.",
 };
 
 const ErrorPage = () => {
   return (
     <>
-      <HeroSub
-        title="404"
-      />
       <NotFound />
     </>
   );
