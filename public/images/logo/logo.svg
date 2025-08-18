@@ -1,0 +1,35 @@
+<svg width="250" height="64" viewBox="0 0 250 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Gradient Definition -->
+    <defs>
+        <linearGradient id="logo-gradient" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#A78BFA" /> <!-- Lighter Violet -->
+            <stop offset="100%" stop-color="#3B82F6" /> <!-- Vibrant Blue -->
+        </linearGradient>
+    </defs>
+
+    <!-- Icon -->
+    <g>
+        <path d="M32 2C19.8497 2 10 11.8497 10 24C10 38 32 62 32 62C32 62 54 38 54 24C54 11.8497 44.1503 2 32 2Z" fill="url(#logo-gradient)"/>
+        <path 
+            d="M39 24.5C39 28.366 35.866 31.5 32 31.5C30.012 31.5 28.2216 30.6734 27 29.3851" 
+            stroke="white" 
+            stroke-width="3" 
+            stroke-linecap="round"
+            fill="none"
+        />
+         <path 
+            d="M25 23.5C25 19.634 28.134 16.5 32 16.5C33.988 16.5 35.7784 17.3266 37 18.6149" 
+            stroke="white" 
+            stroke-width="3" 
+            stroke-linecap="round"
+            fill="none"
+        />
+        <path d="M36 14L37.5 18.5L33 18" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <path d="M28 34L26.5 29.5L31 30" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </g>
+    
+    <!-- Logo Text (Font dependency removed for reliability) -->
+    <text x="68" y="36" font-family="sans-serif" font-size="28" font-weight="600" alignment-baseline="middle" fill="white">
+        Tag<tspan fill="#38BDF8">Sync</tspan>
+    </text>
+</svg>
