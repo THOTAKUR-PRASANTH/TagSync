@@ -21,9 +21,10 @@ try {
 }
 
 const isProd = process.env.NODE_ENV === 'production';
+// Allow Next.js inline runtime and blob workers in production. Dev needs eval for HMR.
 const scriptSrc = isProd
-  ? "script-src 'self'"
-  : "script-src 'self' 'unsafe-inline' 'unsafe-eval'";
+  ? "script-src 'self' 'unsafe-inline' blob:"
+  : "script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:";
 
 const securityHeaders = [
   {
@@ -40,6 +41,8 @@ const securityHeaders = [
       "img-src 'self' data: blob:",
       // Fonts from self and data URIs
       "font-src 'self' data:",
+      // Workers (e.g., Next.js/Remix or libraries may spawn blob workers)
+      "worker-src 'self' blob:",
       // Allow API/websocket connections to self and Supabase
       `connect-src 'self' ${supabaseOrigin} ${supabaseWssOrigin}`,
       // Media if needed
