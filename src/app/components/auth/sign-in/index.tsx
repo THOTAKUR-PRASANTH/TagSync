@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import PreLoader from "../../shared/PreLoader";
 import { createClient } from "@/utils/supabase/client";
-import ErrorAlert from "../../alertBox/page";
+import ErrorAlert from '../../alertBox';
 
 
 const Signin = () => {

@@ -5,6 +5,7 @@ import PreLoader from '../../shared/PreLoader'
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
+import ErrorAlert from '../../alertBox';
 
 
 const SignUp = () => {
@@ -75,7 +76,7 @@ const SignUp = () => {
   return (
     <>
 
-       {error &&<p className="text-red-500 text-sm mt-2">{error}</p>}
+       {error && <ErrorAlert message={error} onClose={() => setError("")} />}
       <div className='mb-10 text-center mx-auto inline-block max-w-[250px]'>
         <Logo />
       </div>
