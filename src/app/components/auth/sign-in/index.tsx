@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import PreLoader from "../../shared/PreLoader";
 import { createClient } from "@/utils/supabase/client";
+import ErrorAlert from "../../alertBox/page";
 
 
 const Signin = () => {
@@ -68,6 +69,8 @@ const Signin = () => {
   return (
     
     <>
+   {error && <ErrorAlert message={error} onClose={() => setError("")} />}
+
     
       <div className="mb-10 text-center mx-auto inline-block max-w-[250px]">
         <Logo />
@@ -119,7 +122,7 @@ const Signin = () => {
       >
         Forgot Password?
       </Link>
-     {error &&<p className="text-red-500 text-sm mt-2">{error}</p>}
+     
    
     </>
   );
