@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import PreLoader from "../../shared/PreLoader";
 import { createClient } from "@/utils/supabase/client";
+import AnimatedAlert from '../../alertBox/page';
 
 const Signin = () => {
   const router = useRouter();
@@ -15,7 +16,6 @@ const Signin = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-
   const supabase = createClient(); 
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -23,20 +23,59 @@ const Signin = () => {
     setLoading(true);
     setError("");
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+  
+    const { data: { user }, error: loginError } = await supabase.auth.signInWithPassword({ email, password });
 
-    if (error) {
-      setError(error.message);
-    } else {
-      router.refresh(); 
-      router.push('/Server/dashboard');
+    if (loginError) {
+      setError(loginError.message);
+      setLoading(false);
+      return;
+    }
+
+    if (user) {
+      try {
+
+        const { data: existing } = await supabase
+          .from("user_details")
+          .select("*")
+          .eq("user_id", user.id)
+          .maybeSingle();
+
+        if (!existing) {
+          const derivedName = user.email?.split("@")[0] || null;
+          const { error: insertError } = await supabase
+            .from("user_details")
+            .insert({
+              user_id: user.id,
+              email: user.email,
+              name: derivedName, 
+            });
+
+          if (insertError) console.error("Failed to insert user_details:", insertError);
+          }
+        router.refresh();
+        router.push("/Server/dashboard");
+      } catch (err) {
+        console.error("Error inserting user_details:", err);
+        setError("Something went wrong. Please try again.");
+      }
     }
 
     setLoading(false);
   };
+  const closeAlert = () => {
+    setError("");
+  };
 
   return (
+    
     <>
+     {error && (
+        <AnimatedAlert
+          message={error}
+          onClose={closeAlert}
+        />
+      )}
       <div className="mb-10 text-center mx-auto inline-block max-w-[250px]">
         <Logo />
       </div>
@@ -88,7 +127,7 @@ const Signin = () => {
         Forgot Password?
       </Link>
 
-      {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
+   
     </>
   );
 };

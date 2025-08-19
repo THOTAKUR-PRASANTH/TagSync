@@ -5,6 +5,7 @@ import PreLoader from '../../shared/PreLoader'
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
+import AnimatedAlert from '../../alertBox/page';
 
 const SignUp = () => {
   const router = useRouter();
@@ -53,35 +54,12 @@ const SignUp = () => {
         return;
       }
 
-      // ✅ Step 2: Proceed with Supabase Auth signup
-      const { data, error } = await supabase.auth.signUp({ email, password });
+      const { error } = await supabase.auth.signUp({ email, password });
 
       if (error) {
         setError(error.message);
         setLoading(false);
         return;
-      }
-
-      // ✅ Step 3: Insert into user_details if user created
-      if (data?.user) {
-        const { error: detailsError } = await supabase.from("user_details").insert([
-          {
-            user_id: data.user.id,
-            name,
-            email,
-            phone: null,
-            address: null,
-            age: null,
-            gender: null,
-          },
-        ]);
-
-        if (detailsError) {
-          console.error("Details Insert Error:", detailsError);
-          setError("Failed to save user details.");
-          setLoading(false);
-          return;
-        }
       }
       router.push("/verify-email");
     } catch (err: any) {
@@ -92,8 +70,19 @@ const SignUp = () => {
     }
   };
 
+  function closeAlert(): void {
+    setError("");
+  }
+
   return (
     <>
+
+       {error && (
+        <AnimatedAlert
+          message={error}
+          onClose={closeAlert}
+        />
+      )}
       <div className='mb-10 text-center mx-auto inline-block max-w-[250px]'>
         <Logo />
       </div>
@@ -164,7 +153,6 @@ const SignUp = () => {
         </a>
       </p>
 
-      {error && <p className='text-red-500 text-sm mb-3'>{error}</p>}
     </>
   )
 }
