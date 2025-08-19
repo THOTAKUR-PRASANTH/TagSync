@@ -16,13 +16,11 @@ const Trade = () => {
           </div>
           <div className='flex flex-col gap-7'>
             <h2 className='font-semibold text-center sm:text-start max-w-96 leading-14'>
-              Trade Anytime, Anywhere
+              Find & Manage Your Tags Anywhere, Anytime
             </h2>
             <p className='lg:text-lg font-normal text-lightblue text-center sm:text-start'>
-              Access your crypto portfolio on the go with our secure,
-              mobile-friendly platform. Whether you're at home or on the move,
-              you can buy, sell, and manage assets 24/7 — no limits, no
-              downtime.
+              Access your TagSync dashboard on any device. Whether you're at home or on the go,
+              you can register items and pets, update their status, and get notified when they're found — all with no limits and no downtime.
             </p>
             <div className='flex justify-between'>
               <Image

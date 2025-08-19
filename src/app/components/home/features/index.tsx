@@ -34,10 +34,12 @@ const Features = () => {
               FEATURES
             </p>
             <h2 className='font-semibold mb-6 text-center max-w-2xl mx-auto sm:leading-14 capitalize'>
-              The Most Trusted Platform for Digital Currency
+              The Most Trusted Platform for Finding Lost Items and Pets
             </h2>
             <p className='lg:text-lg font-normal text-lightpurple text-center max-w-2xl mx-auto '>
-              Discover powerful tools designed to help you securely buy, sell, and manage your crypto assets — trusted by traders, investors, and businesses worldwide.
+              TagSync uses QR technology to help you quickly and securely recover missing items and pets.
+              Attach a TagSync QR tag, and anyone who finds your lost belongings or pets can easily contact you.
+              Discover powerful features designed for peace of mind and fast reunions.
             </p>
           </div>
           {/* Column-2 */}

@@ -31,10 +31,11 @@ const Work = () => {
         <div className='text-center mb-14'>
           <h2 className='mb-3 capitalize'>How It Works</h2>
           <p className='text-lightpurple max-w-2xl mx-auto md:text-lg font-normal md:leading-8 capitalize'>
-            Getting started with crypto is simple. Create an account, verify
-            your identity, and start buying, selling, or accepting digital
-            currencies in just a few clicks — all on a secure and intuitive
-            platform.
+            Getting started with TagSync is simple. Attach a TagSync QR tag to
+            your item or pet, register it on our platform, and update its status
+            if it goes missing. Anyone who finds your lost item or pet can scan
+            the QR code to contact you directly — making recovery fast, secure,
+            and easy.
           </p>
         </div>
         <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-y-20 gap-x-5 mt-20'>

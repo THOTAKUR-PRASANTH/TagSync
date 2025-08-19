@@ -1,51 +1,51 @@
 import Image from 'next/image'
 
-interface table {
+interface TagSyncTable {
   index: number
   name: string
-  price: number
-  change: number
-  cap: number
+  type: string
+  status: string
+  lastSeen: string
   action: string
   imgSrc: string
 }
 
-const tableData: table[] = [
+const tableData: TagSyncTable[] = [
   {
     index: 1,
-    name: 'Bitcoin(BTC)',
-    imgSrc: '/images/table/bitcoin.svg',
-    price: 16458.23,
-    change: 3.96,
-    cap: 16828.25,
-    action: 'Buy',
+    name: 'Bella',
+    type: 'Pet (Dog)',
+    imgSrc: '/images/table/dog.svg',
+    status: 'Missing',
+    lastSeen: 'Central Park',
+    action: 'View Tag',
   },
   {
     index: 2,
-    name: 'Ethereum(ETH)',
-    imgSrc: '/images/table/cryptoone.svg',
-    price: 16458.23,
-    change: 3.96,
-    cap: 16828.8,
-    action: 'Buy',
+    name: 'Wallet',
+    type: 'Item',
+    imgSrc: '/images/table/wallet.svg',
+    status: 'Found',
+    lastSeen: 'Coffee Shop',
+    action: 'Contact Owner',
   },
   {
     index: 3,
-    name: 'Tether(USDT)',
-    imgSrc: '/images/table/cryptothree.svg',
-    price: 16458.23,
-    change: -3.96,
-    cap: 16828.3,
-    action: 'Sell',
+    name: 'Max',
+    type: 'Pet (Cat)',
+    imgSrc: '/images/table/cat.svg',
+    status: 'Missing',
+    lastSeen: 'Elm Street',
+    action: 'View Tag',
   },
   {
     index: 4,
-    name: 'Binance Coin(BNB)',
-    imgSrc: '/images/table/cryptotwo.svg',
-    price: 16458.23,
-    change: -3.96,
-    cap: 16828.42,
-    action: 'Sell',
+    name: 'Backpack',
+    type: 'Item',
+    imgSrc: '/images/table/backpack.svg',
+    status: 'Found',
+    lastSeen: 'Library',
+    action: 'Contact Owner',
   },
 ]
 
@@ -54,16 +54,16 @@ const Table = () => {
     <section id='exchange-section' className='scroll-mt-20'>
       <div className='container'>
         <div className='rounded-2xl bg-tablebg p-8 relative z-10 overflow-hidden'>
-          <p className='text-white/80 text-2xl'>Market Trend Live Stream</p>
+          <p className='text-white/80 text-2xl'>TagSync Live Item & Pet Status</p>
           <div className='overflow-x-scroll lg:overflow-auto'>
             <table className='table-auto w-full mt-10 border border-border'>
               <thead>
                 <tr className='text-white bg-border rounded-2xl'>
                   <th className='px-4 py-4 font-normal rounded-s-lg'>#</th>
                   <th className='px-4 py-4 text-start font-normal'>NAME</th>
-                  <th className='px-4 py-4 font-normal'>PRICE</th>
-                  <th className='px-4 py-4 font-normal'>CHANGE 24H</th>
-                  <th className='px-4 py-4 font-normal'>MARKET CAP</th>
+                  <th className='px-4 py-4 font-normal'>TYPE</th>
+                  <th className='px-4 py-4 font-normal'>STATUS</th>
+                  <th className='px-4 py-4 font-normal'>LAST SEEN</th>
                   <th className='px-4 py-4 font-normal rounded-e-lg'>ACTION</th>
                 </tr>
               </thead>
@@ -76,27 +76,27 @@ const Table = () => {
                     <td className='px-4 py-6 text-center text-white flex items-center justify-start gap-5 '>
                       <Image
                         src={items.imgSrc}
-                        alt={items.imgSrc}
+                        alt={items.name}
                         height={50}
                         width={50}
                       />
                       {items.name}
                     </td>
                     <td className='px-4 py-6 text-center text-white'>
-                      ${items.price.toLocaleString()}
+                      {items.type}
                     </td>
                     <td
                       className={`px-4 py-6 text-center ${
-                        items.change < 0 ? 'text-primary' : 'text-secondary'
+                        items.status === 'Missing' ? 'text-primary' : 'text-secondary'
                       } `}>
-                      {items.change}%
+                      {items.status}
                     </td>
                     <td className='px-4 py-6 text-center text-white'>
-                      ${items.cap.toLocaleString()}
+                      {items.lastSeen}
                     </td>
                     <td
                       className={`px-4 py-6 text-center ${
-                        items.action === 'Buy'
+                        items.action === 'Contact Owner'
                           ? 'text-secondary'
                           : 'text-primary'
                       }`}>

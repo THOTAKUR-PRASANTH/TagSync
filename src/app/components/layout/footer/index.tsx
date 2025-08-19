@@ -38,10 +38,9 @@ const Footer = () => {
               alt='Crypto-Logo'
             />
             <p className='text-white/60 text-sm font-normal max-w-96 leading-7 mb-7'>
-              {' '}
-              Cryptocurrency is a type of virtual currency that uses
-              cryptography to secure transactions that are digitally recorded on
-              a distributed ledger, such as a blockchain.
+              TagSync is a smart solution to help you find missing items and pets using QR technology. 
+              Attach a TagSync QR tag to your belongings or your pet's collar, and anyone who finds them can easily scan the code to contact you. 
+              TagSync makes it simple and secure to reunite with your lost items or loved pets.
             </p>
             <div className='flex gap-4'>
               {sociallink.map((items, i) => (
@@ -100,7 +99,7 @@ const Footer = () => {
                 width={20}
                 height={20}
               />
-              Elgin St. Celina, Delaware 10299
+              Telangana, Khammam 507165
             </div>
           </div>
         </div>
@@ -113,7 +112,7 @@ const Footer = () => {
             target='_blank'
             className='hover:text-primary'>
             {' '}
-            GetNextJs Templates.com
+            TagSync
           </Link>
         </p>
       </div>
@@ -122,3 +121,4 @@ const Footer = () => {
 }
 
 export default Footer
+

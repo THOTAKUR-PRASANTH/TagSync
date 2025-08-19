@@ -33,9 +33,8 @@ const Faq = () => {
           Frequently Asked Questions
         </h2>
         <p className='text-center lg:text-lg font-normal text-lightblue max-w-2xl mx-auto'>
-          Have questions about trading, security, or how our platform works?
-          Find clear answers to the most common inquiries to get started with
-          confidence.
+          Have questions about TagSync, QR tags, or how our product helps you find missing items and pets?
+          Find clear answers to the most common inquiries and get started with confidence using TagSync.
         </p>
         <div>
           <div className='grid lg:grid-cols-2 items-center'>
@@ -84,3 +83,4 @@ const Faq = () => {
 }
 
 export default Faq
+
