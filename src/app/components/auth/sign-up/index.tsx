@@ -5,7 +5,7 @@ import PreLoader from '../../shared/PreLoader'
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
-import AnimatedAlert from '../../alertBox/page';
+
 
 const SignUp = () => {
   const router = useRouter();
@@ -70,9 +70,7 @@ const SignUp = () => {
     }
   };
 
-  function closeAlert(): void {
-    setError("");
-  }
+  
 
   return (
     <>
