@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import PreLoader from "../../shared/PreLoader";
 import { createClient } from "@/utils/supabase/client";
-import AnimatedAlert from '../../alertBox/page';
+
 
 const Signin = () => {
   const router = useRouter();
@@ -63,19 +63,12 @@ const Signin = () => {
 
     setLoading(false);
   };
-  const closeAlert = () => {
-    setError("");
-  };
+ 
 
   return (
     
     <>
-     {error && (
-        <AnimatedAlert
-          message={error}
-          onClose={closeAlert}
-        />
-      )}
+    
       <div className="mb-10 text-center mx-auto inline-block max-w-[250px]">
         <Logo />
       </div>
@@ -126,7 +119,7 @@ const Signin = () => {
       >
         Forgot Password?
       </Link>
-
+     {error &&<p className="text-red-500 text-sm mt-2">{error}</p>}
    
     </>
   );

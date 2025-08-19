@@ -77,12 +77,7 @@ const SignUp = () => {
   return (
     <>
 
-       {error && (
-        <AnimatedAlert
-          message={error}
-          onClose={closeAlert}
-        />
-      )}
+       {error &&<p className="text-red-500 text-sm mt-2">{error}</p>}
       <div className='mb-10 text-center mx-auto inline-block max-w-[250px]'>
         <Logo />
       </div>
