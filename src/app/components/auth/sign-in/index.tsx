@@ -55,7 +55,7 @@ const Signin = () => {
           if (insertError) console.error("Failed to insert user_details:", insertError);
           }
         router.refresh();
-        router.push("/Server/dashboard");
+        router.push("/dashboard");
       } catch (err) {
         console.error("Error inserting user_details:", err);
         setError("Something went wrong. Please try again.");

@@ -1,9 +1,8 @@
-import { createClient } from '@/utils/supabase/server'; // 👈 Use your helper
+import { createClient } from '@/utils/supabase/server';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
-  // This one line does all the work of the block above
-  const supabase = await createClient(); 
+  const supabase = await createClient();
 
   await supabase.auth.signOut();
 
@@ -11,3 +10,5 @@ export async function POST(request: Request) {
     status: 302,
   });
 }
+
+

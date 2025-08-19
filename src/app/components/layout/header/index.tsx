@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
-import { Icon } from '@iconify/react/dist/iconify.js'
+import { X } from 'lucide-react'
 import HeaderLink from './navigation/HeaderLink'
 import Signin from '../../auth/sign-in'
 import SignUp from '../../auth/sign-up'
@@ -117,10 +117,7 @@ const Header: React.FC = () => {
                     onClick={() => setIsSignInOpen(false)}
                     className='absolute top-0 right-0 mr-8 mt-8 cursor-pointer'
                     aria-label='Close Sign In Modal'>
-                    <Icon
-                      icon='tabler:currency-xrp'
-                      className='text-white hover:text-primary text-24 inline-block me-2'
-                    />
+                    <X className='text-white hover:text-primary inline-block me-2 w-6 h-6' />
                   </button>
                   <Signin />
                 </div>
@@ -143,10 +140,7 @@ const Header: React.FC = () => {
                     onClick={() => setIsSignUpOpen(false)}
                     className='absolute top-0 right-0 mr-8 mt-8 cursor-pointer'
                     aria-label='Close Sign Up Modal'>
-                    <Icon
-                      icon='tabler:currency-xrp'
-                      className='text-white hover:text-primary text-24 inline-block me-2'
-                    />
+                    <X className='text-white hover:text-primary inline-block me-2 w-6 h-6' />
                   </button>
                   <SignUp />
                 </div>
@@ -179,10 +173,7 @@ const Header: React.FC = () => {
               onClick={() => setNavbarOpen(false)}
               className='hover:cursor-pointer'
               aria-label='Close menu Modal'>
-              <Icon
-                icon='tabler:currency-xrp'
-                className='text-white text-xl hover:text-primary text-24 inline-block me-2'
-              />
+              <X className='text-white hover:text-primary inline-block me-2 w-6 h-6' />
             </button>
           </div>
           <nav className='flex flex-col items-start p-4 text-white'>

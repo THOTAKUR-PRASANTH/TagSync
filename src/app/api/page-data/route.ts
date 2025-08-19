@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server'
 
+export const revalidate = 3600; // cache static JSON for 1 hour
+
 import { HeaderItem } from '@/app/types/menu'
 import { SocialType } from '@/app/types/sociallink'
 import { FooterType } from '@/app/types/footerlink'

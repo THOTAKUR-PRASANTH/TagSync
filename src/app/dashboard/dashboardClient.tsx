@@ -6,14 +6,12 @@ interface User {
 }
 export default function DashboardClient({ user }: { user: User }) {
   return (
-<div className="min-h-screen w-full bg-gradient-to-br from-purple-600 via-pink-500 to-red-400 text-white flex flex-col">
-      {/* Top Navbar */}
+    <div className="min-h-screen w-full bg-gradient-to-br from-purple-600 via-pink-500 to-red-400 text-white flex flex-col">
       <header className="flex justify-between items-center px-10 py-6 bg-black/20 backdrop-blur-md shadow-md">
         <h1 className="text-3xl font-extrabold tracking-wide">
           ✨ Welcome, {user.email?.split("@")[0]}!
         </h1>
 
-        {/* ✅ Fixed logout route */}
         <form action="/api/Auth/signout" method="post">
           <button
             type="submit"
@@ -24,9 +22,7 @@ export default function DashboardClient({ user }: { user: User }) {
         </form>
       </header>
 
-      {/* Dashboard Content */}
       <main className="flex-1 p-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {/* Profile Card */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -44,7 +40,6 @@ export default function DashboardClient({ user }: { user: User }) {
           </p>
         </motion.div>
 
-        {/* Notifications */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -65,7 +60,6 @@ export default function DashboardClient({ user }: { user: User }) {
           </ul>
         </motion.div>
 
-        {/* Quick Stats */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -93,7 +87,6 @@ export default function DashboardClient({ user }: { user: User }) {
           </div>
         </motion.div>
 
-        {/* Activity Feed */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -113,5 +106,6 @@ export default function DashboardClient({ user }: { user: User }) {
       </main>
     </div>
   );
-
 }
+
+

@@ -27,15 +27,17 @@ export async function middleware(request: NextRequest) {
 
   const { data: { session } } = await supabase.auth.getSession();
   const pathname = request.nextUrl.pathname;
-  if (!session && pathname.startsWith('/Server')) {
+  if (!session && (pathname.startsWith('/dashboard') || pathname.startsWith('/secure'))) {
     return NextResponse.redirect(new URL('/', request.url));
   }
   if (session && pathname === '/') {
-    return NextResponse.redirect(new URL('/Server/dashboard', request.url));
+    return NextResponse.redirect(new URL('/dashboard', request.url));
   }
   return response;
 }
 
 export const config = {
-  matcher: ['/Server/:path*', '/'],
+  matcher: ['/dashboard/:path*', '/secure/:path*', '/'],
 };
+
+
