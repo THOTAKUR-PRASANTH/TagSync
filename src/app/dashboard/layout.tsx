@@ -8,6 +8,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     <PrivateLayout>
       <SecuredLayout>
         {children}
+        
       </SecuredLayout>
     </PrivateLayout>
   );

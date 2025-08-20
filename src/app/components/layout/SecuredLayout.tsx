@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -50,6 +51,12 @@ function Sidebar({ isOpen, onClose, user }: {
   onClose: () => void; 
   user?: { email?: string; }
 }) {
+  const router = useRouter();
+  const handleLogout = async () => {
+    await fetch('/api/Auth/signout', { method: 'POST', credentials: 'include' });
+    router.replace('/');
+    router.refresh();
+  };
   const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: Home },
     { name: 'Analytics', href: '/secure', icon: BarChart3 },
@@ -121,12 +128,10 @@ function Sidebar({ isOpen, onClose, user }: {
                 </p>
               </div>
             </a>
-            <form action="/api/Auth/signout" method="post" className="mt-2">
-              <button type="submit" className="w-full text-left px-4 py-3 text-sm text-red-600 hover:bg-red-500/10 transition-colors flex items-center gap-3 rounded-lg" role="menuitem">
-                <LogOut className="w-5 h-5" />
-                Logout
-              </button>
-            </form>
+            <button onClick={handleLogout} className="mt-2 w-full text-left px-4 py-3 text-sm text-red-600 hover:bg-red-500/10 transition-colors flex items-center gap-3 rounded-lg" role="menuitem">
+              <LogOut className="w-5 h-5" />
+              Logout
+            </button>
           </div>
         </div>
       </motion.div>
@@ -138,6 +143,13 @@ function Sidebar({ isOpen, onClose, user }: {
 export default function SecuredLayout({ children, user }: SecuredLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await fetch('/api/Auth/signout', { method: 'POST', credentials: 'include' });
+    router.replace('/');
+    router.refresh();
+  };
 
   const mainNavigation = [
     { name: 'Dashboard', href: '/dashboard', icon: Home },
@@ -209,14 +221,12 @@ export default function SecuredLayout({ children, user }: SecuredLayoutProps) {
               </div>
             )}
           </a>
-           <form action="/api/Auth/signout" method="post" className="mt-2">
-              <button type="submit" className={`w-full text-left px-3 py-3 text-sm text-red-600 hover:bg-red-500/10 transition-colors flex items-center gap-3 rounded-lg group ${sidebarCollapsed ? 'justify-center' : ''}`} role="menuitem" title={sidebarCollapsed ? 'Logout' : undefined}>
-                <LogOut className="w-5 h-5 flex-shrink-0" />
-                 {!sidebarCollapsed && (
-                    <span className="font-medium truncate">Logout</span>
-                 )}
-              </button>
-            </form>
+           <button onClick={handleLogout} className={`mt-2 w-full text-left px-3 py-3 text-sm text-red-600 hover:bg-red-500/10 transition-colors flex items-center gap-3 rounded-lg group ${sidebarCollapsed ? 'justify-center' : ''}`} role="menuitem" title={sidebarCollapsed ? 'Logout' : undefined}>
+              <LogOut className="w-5 h-5 flex-shrink-0" />
+              {!sidebarCollapsed && (
+                <span className="font-medium truncate">Logout</span>
+              )}
+            </button>
         </div>
       </motion.div>
       
