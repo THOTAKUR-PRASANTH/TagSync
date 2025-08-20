@@ -1,13 +1,14 @@
 "use client";
 
 import PrivateLayout from "../layouts/PrivateLayout";
+import SecuredLayout from "../components/layout/SecuredLayout";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <PrivateLayout>
-      <div className="min-h-screen w-full bg-gradient-to-br from-purple-600 via-pink-500 to-red-400 text-white">
+      <SecuredLayout>
         {children}
-      </div>
+      </SecuredLayout>
     </PrivateLayout>
   );
 }

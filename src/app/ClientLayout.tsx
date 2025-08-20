@@ -16,7 +16,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     '/not-found',
   ];
 
-  const showLayout = !noLayoutRoutes.includes(pathname) && !pathname.startsWith('/dashboard') && !pathname.startsWith('/secure');
+  const showLayout = !noLayoutRoutes.includes(pathname) && !pathname.startsWith('/dashboard') 
+  && !pathname.startsWith('/secure') && !pathname.startsWith('/components');
 
   useEffect(() => {
     const hideLoader = () => {
