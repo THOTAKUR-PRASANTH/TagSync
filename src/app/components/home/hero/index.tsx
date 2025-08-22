@@ -138,18 +138,15 @@ const Banner = () => {
 
               <div className="overlay flex items-center justify-between border-b border-solid border-border p-5 z-40 backdrop-blur-sm">
                 <h3 className="text-white">How It Works</h3>
-                <button onClick={closeModal} className="inline-block dark:invert">
-                  <Icon
-                    icon="tabler:circle-x"
-                    className="text-2xl text-white hover:cursor-pointer hover:text-primary"
-                  />
+                <button onClick={closeModal} className="inline-block dark:invert text-1xl text-white hover:cursor-pointer hover:text-primary" aria-label="Close">
+                  X
                 </button>
               </div>
 
               <iframe
                 height="400"
                 className="p-4 md:w-[50rem] w-full"
-                src="https://www.youtube.com/embed/B-RRBNrtlbo?si=L3VIc75zsUXB8AiT"
+                src="/videos/howItWorks.mp4"
                 title="How TagSync Works"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -157,6 +154,9 @@ const Banner = () => {
                 allowFullScreen
                 onLoad={() => setVideoLoading(false)}
               ></iframe>
+             
+            
+             
             </div>
           </div>
         )}
@@ -164,5 +164,6 @@ const Banner = () => {
     </LazyMotion>
   )
 }
+
 
 export default Banner
