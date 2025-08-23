@@ -11,6 +11,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en' suppressHydrationWarning>
+      <head>
+      <meta name="google-site-verification" content="dE1mr2SEo7uTdID_QNbUyYmpW5_1Ufa0FWbuQLGS8fM" />
+      </head>
       <body className={`${font.className}`}>
         <ClientLayout>{children}</ClientLayout>
       </body>
