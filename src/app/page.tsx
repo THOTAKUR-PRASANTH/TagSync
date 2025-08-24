@@ -9,6 +9,7 @@ import Simple from "./components/home/simple";
 import Trade from "./components/home/trade";
 import Faq from "./components/home/faq";
 import ContactForm from "./components/ContactForm";
+import HeroComponent from "./components/home/welcome";
 
 export default function Home() {
   useEffect(() => {
@@ -27,6 +28,7 @@ export default function Home() {
   return (
     <main>
       <Banner />
+    <HeroComponent />
       <QRWithItems />
       <Work />
       <Table />
