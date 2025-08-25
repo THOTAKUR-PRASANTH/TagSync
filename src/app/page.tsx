@@ -10,6 +10,7 @@ import Trade from "./components/home/trade";
 import Faq from "./components/home/faq";
 import ContactForm from "./components/ContactForm";
 import HeroComponent from "./components/home/welcome";
+import poster from "./components/home/Poster";
 
 export default function Home() {
   useEffect(() => {
@@ -29,6 +30,7 @@ export default function Home() {
     <main>
       <Banner />
     <HeroComponent />
+      {poster()}
       <QRWithItems />
       <Work />
       <Table />
