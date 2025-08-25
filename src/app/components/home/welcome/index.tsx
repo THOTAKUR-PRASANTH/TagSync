@@ -1,8 +1,8 @@
 'use client';
 import React from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
-// You can place your hero image in the `public` directory of your Next.js project.
 const heroImageUrl = '/images/hero/hero.png';
 
 const HeroComponent = () => {
@@ -18,119 +18,92 @@ const HeroComponent = () => {
     },
   };
 
-  // Fade animation variant for all children (faster and smoother)
+  // A more performant fade-up animation variant
   const fadeUp = {
     hidden: { y: 24, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
-      transition: { duration: 0.5, ease: "easeOut" }
+      transition: { 
+        duration: 0.6, 
+        ease: [0.25, 1, 0.5, 1] // A smooth, fast ease-out curve
+      }
     },
   };
 
   return (
-    // Main section container with a new, more colorful background and increased height
-    <section
-      className="w-full bg-slate-50 font-sans overflow-hidden relative py-12 sm:py-16"
-      style={{
-        overscrollBehavior: 'contain',
-        WebkitOverflowScrolling: 'touch',
-        scrollBehavior: 'smooth',
-        paddingTop: '5rem'
-      }}
+    <section 
+      className="relative w-full overflow-hidden bg-slate-50 py-12 font-sans sm:py-16"
+      style={{ paddingTop: '5rem' }}
     >
+      {/* Background blur elements */}
+      <div className="absolute top-0 left-0 h-full w-1/3 bg-gradient-to-r from-purple-200/50 to-transparent filter blur-3xl"></div>
+      <div className="absolute top-0 right-0 h-full w-1/3 bg-gradient-to-l from-cyan-200/50 to-transparent filter blur-3xl"></div>
+      <div className="absolute bottom-0 left-0 h-1/3 w-full bg-gradient-to-t from-pink-200/50 to-transparent filter blur-3xl"></div>
 
-      {/* NEW: Glassmorphic colors on the edges of the background */}
-      <div className="absolute top-0 left-0 w-1/3 h-full bg-gradient-to-r from-purple-200/50 to-transparent filter blur-3xl"></div>
-      <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-cyan-200/50 to-transparent filter blur-3xl"></div>
-      <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-pink-200/50 to-transparent filter blur-3xl"></div>
-
-      {/* Outer container with reduced padding */}
-      <div className="relative w-full flex flex-col items-center justify-center px-2 sm:px-4">
-
+      <div className="relative flex w-full flex-col items-center justify-center px-2 sm:px-4">
         {/* Glassmorphic Card */}
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.2 }} // Triggers animation once
           variants={staggerContainer}
-          // UPDATED: Increased max-width for a wider card and adjusted padding/margins
-          className="relative w-full max-w-7xl rounded-[2.5rem] shadow-2xl 
-                     bg-white/60 backdrop-blur-xl 
-                     overflow-hidden p-1.5"
+          className="relative w-full max-w-7xl overflow-hidden rounded-[2.5rem] bg-white/60 p-1.5 shadow-2xl backdrop-blur-xl"
         >
-          {/* A cool, clean, ANIMATED gradient border */}
-          {/* UPDATED: Added motion.div for animation and increased blur/opacity for a stronger glow */}
-          <motion.div
-            className="absolute inset-0 -z-10"
-            animate={{
-              rotate: 360,
-            }}
-            transition={{
-              duration: 15,
-              ease: 'linear',
-              repeat: Infinity,
-            }}
-          >
+          {/* Performant CSS animation for the border glow */}
+          <div className="animate-spin-slow absolute inset-0 -z-10">
             <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-cyan-400 via-purple-500 to-pink-500 blur-2xl opacity-90"></div>
-          </motion.div>
-          
-          <div className="relative bg-white/70 rounded-[2rem] border border-white/30">
+          </div>
 
-            {/* Inner container with padding */}
+          <div className="relative rounded-[2rem] border border-white/30 bg-white/70">
             <div className="relative p-6 sm:p-8 md:p-10">
-
-              {/* Mobile stacked | Desktop grid layout */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 lg:gap-x-12 gap-y-8 items-center">
-
-                {/* Image Column with increased height */}
+              <div className="grid grid-cols-1 items-center gap-y-8 lg:grid-cols-12 lg:gap-x-12">
+                
+                {/* Image Column */}
                 <motion.div
-                  className="w-full h-[45vh] sm:h-[50vh] lg:h-[70vh] lg:max-h-[600px] lg:col-span-5"
+                  className="relative h-[45vh] w-full sm:h-[50vh] lg:col-span-5 lg:h-[70vh] lg:max-h-[600px] will-change-transform"
                   variants={fadeUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, amount: 0.3 }}
                 >
-                  <img
+                  <Image
                     src={heroImageUrl}
                     alt="A person lovingly hugging their dog"
-                    className="w-full h-full object-cover rounded-2xl shadow-lg"
-                    onError={(e) => { e.currentTarget.src = 'https://placehold.co/800x1000/ccc/FFF?text=Image'; }}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 40vw"
+                    className="rounded-2xl object-cover shadow-lg"
+                    priority
                   />
                 </motion.div>
 
                 {/* Text Content Column */}
                 <motion.div
-                  className="lg:col-span-7 flex flex-col justify-center text-center lg:text-left space-y-4"
+                  className="flex flex-col justify-center space-y-4 text-center lg:col-span-7 lg:text-left will-change-transform"
                   variants={staggerContainer}
                   initial="hidden"
                   whileInView="visible"
-                  viewport={{ once: true, amount: 0.3 }}
+                  viewport={{ once: true, amount: 0.2 }}
                 >
                   <motion.h1
-                    className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 tracking-tight"
+                    className="text-4xl font-extrabold tracking-tight text-gray-900 md:text-5xl lg:text-6xl"
                     variants={fadeUp}
                   >
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500">
+                    <span className="bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
                       TagSync:
                     </span>{" "}
                     Lost & Found, Made Kind.
                   </motion.h1>
 
                   <motion.p
-                    className="text-gray-700 text-base md:text-lg lg:text-xl leading-relaxed max-w-2xl mx-auto lg:mx-0"
+                    className="mx-auto max-w-2xl text-base leading-relaxed text-gray-700 md:text-lg lg:mx-0 lg:text-xl"
                     variants={fadeUp}
                   >
-                    Losing a beloved pet or something precious feels like losing a piece of your heart.
-                    The panic, the searching, the “what ifs”—it's overwhelming.
+                    Losing a beloved pet or something precious feels like losing a piece of your heart. The panic, the searching, the “what ifs”—it's overwhelming.
                   </motion.p>
 
                   <motion.p
-                    className="text-gray-700 text-base md:text-lg lg:text-xl leading-relaxed max-w-2xl mx-auto lg:mx-0"
+                    className="mx-auto max-w-2xl text-base leading-relaxed text-gray-700 md:text-lg lg:mx-0 lg:text-xl"
                     variants={fadeUp}
                   >
-                    But TagSync turns those moments of fear into stories of reunion.
-                    With a simple scan, finders become helpers, and strangers become heroes.
+                    But TagSync turns those moments of fear into stories of reunion. With a simple scan, finders become helpers, and strangers become heroes.
                   </motion.p>
                 </motion.div>
               </div>
@@ -138,13 +111,6 @@ const HeroComponent = () => {
           </div>
         </motion.div>
       </div>
-      <style jsx global>{`
-        html, body {
-          overscroll-behavior: contain;
-          scroll-behavior: smooth;
-          -webkit-overflow-scrolling: touch;
-        }
-      `}</style>
     </section>
   );
 };

@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 // Import icons from react-icons
 import { FaShieldAlt, FaHeart, FaHandshake } from "react-icons/fa";
 
-// Advanced Glassmorphic Card with Hover Effects (Light Theme)
+// Advanced Glassmorphic Card with Optimized Hover Effects (Light Theme)
 const GlassCard = ({
   children,
   className,
@@ -18,38 +18,25 @@ const GlassCard = ({
   delay?: number;
   hover?: boolean;
 }) => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setMousePosition({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
-  };
-
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40, scale: 0.9 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
+      initial={{ opacity: 0, y: 40, scale: 0.95 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, amount: 0.2 }}
       transition={{
-        duration: 0.8,
+        duration: 0.7,
         delay,
-        ease: [0.6, -0.05, 0.01, 0.99],
-        scale: { type: "spring", stiffness: 100 },
+        ease: [0.25, 1, 0.5, 1], // A smooth and fast ease-out curve
       }}
       whileHover={
         hover
           ? {
               scale: 1.03,
-              rotateX: 2,
-              rotateY: 2,
               transition: { duration: 0.3 },
             }
           : {}
       }
-      onMouseMove={handleMouseMove}
-      className={`relative group ${className}`}
+      className={`relative group will-change-transform ${className}`}
     >
       {/* Multi-layer glass effect */}
       <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-white/40 to-transparent backdrop-blur-xl rounded-3xl" />
@@ -59,11 +46,11 @@ const GlassCard = ({
 
       {/* Main glass container */}
       <div className="relative bg-white/30 backdrop-blur-lg rounded-3xl border border-white/50 shadow-[0_8px_32px_rgba(31,38,135,0.1)] overflow-hidden p-6 transition-all duration-500">
-        {/* Animated shine effect on hover */}
+        {/* OPTIMIZED: Static shine effect on hover, no more mouse tracking */}
         <div
-          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+          className="absolute top-0 left-0 right-0 bottom-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
           style={{
-            background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(255,255,255,0.5), transparent 40%)`,
+            background: `radial-gradient(600px circle at 50% 0%, rgba(255,255,255,0.5), transparent 40%)`,
           }}
         />
 
@@ -75,28 +62,6 @@ const GlassCard = ({
     </motion.div>
   );
 };
-
-// Floating animation component
-const FloatingElement = ({
-  children,
-  delay = 0,
-}: {
-  children: React.ReactNode;
-  delay?: number;
-}) => (
-  <motion.div
-    initial={{ y: 0 }}
-    animate={{ y: [-10, 10, -10] }}
-    transition={{
-      duration: 4,
-      repeat: Infinity,
-      ease: "easeInOut",
-      delay,
-    }}
-  >
-    {children}
-  </motion.div>
-);
 
 // Animated gradient orbs
 const GradientOrb = ({
@@ -113,7 +78,7 @@ const GradientOrb = ({
   <motion.div
     initial={{ opacity: 0, scale: 0.8 }}
     animate={{
-      opacity: [0.1, 0.3, 0.1], // Reduced opacity for light theme
+      opacity: [0.1, 0.3, 0.1],
       scale: [1, 1.2, 1],
       x: [0, 50, 0],
       y: [0, -30, 0],
@@ -125,7 +90,8 @@ const GradientOrb = ({
       delay,
     }}
     // Switched to mix-blend-multiply for better effect on light background
-    className={`absolute ${size} ${color} rounded-full blur-3xl mix-blend-multiply ${className}`}
+    // Added will-change for performance hint
+    className={`absolute ${size} ${color} rounded-full blur-3xl mix-blend-multiply will-change-transform ${className}`}
   />
 );
 
@@ -158,13 +124,13 @@ export default function TagSyncHeroPage() {
     setMounted(true);
   }, []);
 
-  // Fade animation variant for all children (fast and smooth)
-  const fadeVariant = {
-    hidden: { opacity: 0, y: 24 },
+  // Simplified fade-in-up variant for all content children for consistency
+  const contentFadeIn = {
+    hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5, ease: "easeOut" },
+      transition: { duration: 0.6, ease: "easeOut" },
     },
   };
 
@@ -172,13 +138,10 @@ export default function TagSyncHeroPage() {
     <main
       className="relative flex flex-col items-center justify-center min-h-screen w-full bg-gradient-to-br from-gray-100 via-sky-100 to-purple-100 text-slate-800 overflow-hidden p-4 sm:p-6"
       style={{
-        overscrollBehavior: "contain",
-        WebkitOverflowScrolling: "touch",
-        scrollBehavior: "smooth",
         paddingTop: "5rem",
       }}
     >
-      {/* Multiple animated orbs for depth */}
+      {/* Background elements */}
       <GradientOrb className="top-0 -left-48" color="bg-blue-300" delay={0} />
       <GradientOrb
         className="bottom-0 -right-48"
@@ -192,10 +155,10 @@ export default function TagSyncHeroPage() {
         delay={4}
       />
 
-      {/* Particle effect */}
+      {/* Particle effect - reduced count for better performance */}
       <div className="absolute inset-0 overflow-hidden">
         {mounted &&
-          Array.from({ length: 20 }).map((_, i) => (
+          Array.from({ length: 15 }).map((_, i) => ( // Reduced particle count
             <motion.div
               key={i}
               className="absolute w-1 h-1 bg-slate-500/30 rounded-full"
@@ -208,7 +171,7 @@ export default function TagSyncHeroPage() {
                 x: Math.random() * window.innerWidth,
               }}
               transition={{
-                duration: Math.random() * 10 + 10,
+                duration: Math.random() * 10 + 15, // Slightly longer duration
                 repeat: Infinity,
                 ease: "linear",
                 delay: Math.random() * 5,
@@ -224,26 +187,15 @@ export default function TagSyncHeroPage() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
-          variants={fadeVariant}
+          variants={contentFadeIn}
           className="text-center space-y-4"
         >
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            variants={fadeVariant}
-          >
+          <div>
             <span className="inline-block px-6 py-2 text-sm font-medium tracking-wider text-purple-600 uppercase bg-white/40 backdrop-blur-xl rounded-full border border-purple-300/50 shadow-lg shadow-purple-500/10">
               The Heart of TagSync
             </span>
-          </motion.div>
-          <motion.h1
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            variants={fadeVariant}
-            className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold"
-          >
+          </div>
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold">
             <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text animate-gradient-text">
               Kindness in Every
             </span>
@@ -251,124 +203,122 @@ export default function TagSyncHeroPage() {
             <span className="bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 text-transparent bg-clip-text animate-gradient-text">
               Reunion
             </span>
-          </motion.h1>
+          </h1>
         </motion.div>
 
         {/* Images Section with enhanced glass cards */}
         <div className="w-full grid grid-cols-1 lg:grid-cols-5 gap-6">
           {/* Main Poster Card */}
-          <GlassCard className="lg:col-span-3" delay={0.2}>
-            <FloatingElement delay={0}>
-              <motion.div
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.3 }}
-                variants={fadeVariant}
-                className="space-y-6"
-              >
-                <div className="text-center">
-                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-slate-900 via-slate-700 to-slate-900 text-transparent bg-clip-text leading-tight">
-                    Everything you love finds its way home
-                  </h2>
-                  <p className="mt-3 text-slate-600 text-sm sm:text-base">
-                    Smart QR tags that connect hearts across distances.
-                  </p>
-                </div>
+          <GlassCard className="lg:col-span-3" delay={0.1}>
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+              variants={contentFadeIn}
+              className="space-y-6"
+            >
+              <div className="text-center">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-slate-900 via-slate-700 to-slate-900 text-transparent bg-clip-text leading-tight">
+                  Everything you love finds its way home
+                </h2>
+                <p className="mt-3 text-slate-600 text-sm sm:text-base">
+                  Smart QR tags that connect hearts across distances.
+                </p>
+              </div>
 
-                <div className="relative w-full h-[300px] sm:h-[400px] rounded-2xl overflow-hidden bg-gradient-to-br from-purple-500/10 to-blue-500/10 border border-white/20 shadow-xl">
-                  <Image
-                    src="/images/hero/poster.png"
-                    alt="Happy reunion with TagSync"
-                    fill
-                    style={{ objectFit: "cover" }}
-                    priority
-                    className="transition-transform duration-700 hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10" />
-
-                  {/* Animated overlay text */}
-                  <motion.div
-                    className="absolute bottom-4 left-4 right-4 z-20"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1, duration: 0.6 }}
-                  >
-                    <span className="px-4 py-2 bg-black/10 backdrop-blur-lg rounded-full text-white text-sm inline-block border border-white/20">
-                      ✨ Trusted by 10,000+ happy users
-                    </span>
-                  </motion.div>
-                </div>
-              </motion.div>
-            </FloatingElement>
+              <div className="relative w-full h-[300px] sm:h-[400px] rounded-2xl overflow-hidden bg-gradient-to-br from-purple-500/10 to-blue-500/10 border border-white/20 shadow-xl">
+                <Image
+                  src="/images/hero/poster.png"
+                  alt="Happy reunion with TagSync"
+                  fill
+                  style={{ objectFit: "cover" }}
+                  priority
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10" />
+                <motion.div
+                  className="absolute bottom-4 left-4 right-4 z-20"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.8, duration: 0.6 }}
+                >
+                  <span className="px-4 py-2 bg-black/10 backdrop-blur-lg rounded-full text-white text-sm inline-block border border-white/20">
+                    ✨ Trusted by 10,000+ happy users
+                  </span>
+                </motion.div>
+              </div>
+            </motion.div>
           </GlassCard>
 
           {/* Product Showcase Card */}
-          <GlassCard className="lg:col-span-2" delay={0.4}>
-            <FloatingElement delay={0.5}>
-              <motion.div
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.3 }}
-                variants={fadeVariant}
-                className="h-full flex flex-col justify-center space-y-4"
-              >
-                <div className="text-center">
-                  <h3 className="text-xl sm:text-2xl font-bold text-slate-900">
-                    Smart Tags for Your Belongings
-                  </h3>
-                  <p className="mt-2 text-slate-600 text-sm">
-                    Elegant design meets cutting-edge technology.
-                  </p>
-                </div>
+          <GlassCard className="lg:col-span-2" delay={0.2}>
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+              variants={contentFadeIn}
+              className="h-full flex flex-col justify-center space-y-4"
+            >
+              <div className="text-center">
+                <h3 className="text-xl sm:text-2xl font-bold text-slate-900">
+                  Smart Tags for Your Belongings
+                </h3>
+                <p className="mt-2 text-slate-600 text-sm">
+                  Elegant design meets cutting-edge technology.
+                </p>
+              </div>
 
-                <div className="relative w-full h-[250px] sm:h-[300px] rounded-2xl overflow-hidden bg-gradient-to-br from-cyan-500/10 to-purple-500/10 border border-white/20 group">
-                  <Image
-                    src="/images/hero/glass.png"
-                    alt="TagSync product showcase"
-                    fill
-                    style={{ objectFit: "contain" }}
-                    className="transition-all duration-700 group-hover:scale-105 group-hover:rotate-3"
-                  />
-                </div>
+              <div className="relative w-full h-[250px] sm:h-[300px] rounded-2xl overflow-hidden bg-gradient-to-br from-cyan-500/10 to-purple-500/10 border border-white/20 group">
+                <Image
+                  src="/images/hero/glass.png"
+                  alt="TagSync product showcase"
+                  fill
+                  style={{ objectFit: "contain" }}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="transition-all duration-700 group-hover:scale-105 group-hover:rotate-3"
+                />
+              </div>
 
-                {/* Feature badges */}
-                <div className="flex flex-wrap gap-2 justify-center">
-                  {["Waterproof", "Global", "Instant"].map((badge, i) => (
-                    <motion.span
-                      key={badge}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.8 + i * 0.1 }}
-                      className="px-3 py-1 bg-white/20 backdrop-blur-lg rounded-full text-xs text-slate-700 font-medium border border-white/30"
-                    >
-                      {badge}
-                    </motion.span>
-                  ))}
-                </div>
-              </motion.div>
-            </FloatingElement>
+              {/* Feature badges */}
+              <div className="flex flex-wrap gap-2 justify-center">
+                {["Waterproof", "Global", "Instant"].map((badge, i) => (
+                  <motion.span
+                    key={badge}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.6 + i * 0.1 }}
+                    className="px-3 py-1 bg-white/20 backdrop-blur-lg rounded-full text-xs text-slate-700 font-medium border border-white/30"
+                  >
+                    {badge}
+                  </motion.span>
+                ))}
+              </div>
+            </motion.div>
           </GlassCard>
         </div>
+
+        {/* Feature Cards Section */}
         <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
           {featureItems.map((item, index) => (
-            <GlassCard key={item.title} delay={0.6 + index * 0.1}>
+            <GlassCard key={item.title} delay={0.1 * index}>
               <motion.div
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.3 }}
-                variants={fadeVariant}
+                variants={contentFadeIn}
                 className="text-center space-y-4"
               >
                 <motion.div
                   className="text-5xl mx-auto w-fit"
                   animate={{
-                    rotate: [0, 10, -10, 0],
-                    scale: [1, 1.1, 1],
+                    y: [0, -8, 0],
                   }}
                   transition={{
                     duration: 3,
                     repeat: Infinity,
                     delay: index * 0.3,
+                    ease: "easeInOut",
                   }}
                 >
                   {item.icon}
@@ -387,8 +337,9 @@ export default function TagSyncHeroPage() {
                 <motion.div
                   className={`h-1 bg-gradient-to-r ${item.gradient} rounded-full mx-auto`}
                   initial={{ width: 0 }}
-                  animate={{ width: "80%" }}
-                  transition={{ delay: 1 + index * 0.2, duration: 0.6 }}
+                  whileInView={{ width: "80%" }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.5, duration: 0.8, ease: "easeOut" }}
                 />
               </motion.div>
             </GlassCard>
@@ -396,26 +347,13 @@ export default function TagSyncHeroPage() {
         </div>
       </div>
       <style jsx global>{`
-        html,
-        body {
-          overscroll-behavior: contain;
-          scroll-behavior: smooth;
-          -webkit-overflow-scrolling: touch;
-        }
-
+        /* Removed unnecessary global styles for overscroll/scroll-behavior as they are better handled per-component or in a global CSS file */
         @keyframes gradient {
-          0%,
-          100% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
         }
-
         @keyframes gradient-text {
-          0%,
-          100% {
+          0%, 100% {
             background-size: 200% 200%;
             background-position: left center;
           }
@@ -424,25 +362,17 @@ export default function TagSyncHeroPage() {
             background-position: right center;
           }
         }
-
         @keyframes spin-slow {
-          from {
-            transform: rotate(0deg);
-          }
-          to {
-            transform: rotate(360deg);
-          }
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
         }
-
         .animate-gradient {
           background-size: 400% 400%;
           animation: gradient 15s ease infinite;
         }
-
         .animate-gradient-text {
           animation: gradient-text 3s ease infinite;
         }
-
         .animate-spin-slow {
           animation: spin-slow 20s linear infinite;
         }
