@@ -18,19 +18,27 @@ const HeroComponent = () => {
     },
   };
 
-  // A simple fade-up animation variant for child elements
+  // Fade animation variant for all children (faster and smoother)
   const fadeUp = {
-    hidden: { y: 30, opacity: 0 },
+    hidden: { y: 24, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
-      transition: { duration: 0.9, ease: "easeInOut" }
+      transition: { duration: 0.5, ease: "easeOut" }
     },
   };
 
   return (
     // Main section container with a new, more colorful background and increased height
-    <section className="w-full bg-slate-50 font-sans overflow-hidden relative py-12 sm:py-16">
+    <section
+      className="w-full bg-slate-50 font-sans overflow-hidden relative py-12 sm:py-16"
+      style={{
+        overscrollBehavior: 'contain',
+        WebkitOverflowScrolling: 'touch',
+        scrollBehavior: 'smooth',
+        paddingTop: '5rem'
+      }}
+    >
 
       {/* NEW: Glassmorphic colors on the edges of the background */}
       <div className="absolute top-0 left-0 w-1/3 h-full bg-gradient-to-r from-purple-200/50 to-transparent filter blur-3xl"></div>
@@ -79,6 +87,9 @@ const HeroComponent = () => {
                 <motion.div
                   className="w-full h-[45vh] sm:h-[50vh] lg:h-[70vh] lg:max-h-[600px] lg:col-span-5"
                   variants={fadeUp}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.3 }}
                 >
                   <img
                     src={heroImageUrl}
@@ -92,6 +103,9 @@ const HeroComponent = () => {
                 <motion.div
                   className="lg:col-span-7 flex flex-col justify-center text-center lg:text-left space-y-4"
                   variants={staggerContainer}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.3 }}
                 >
                   <motion.h1
                     className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 tracking-tight"
@@ -124,6 +138,13 @@ const HeroComponent = () => {
           </div>
         </motion.div>
       </div>
+      <style jsx global>{`
+        html, body {
+          overscroll-behavior: contain;
+          scroll-behavior: smooth;
+          -webkit-overflow-scrolling: touch;
+        }
+      `}</style>
     </section>
   );
 };

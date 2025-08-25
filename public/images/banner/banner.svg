@@ -1,108 +1,156 @@
 <svg viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
     <!-- Defs for gradients, filters, and patterns -->
     <defs>
+        <!-- New blue gradient for the connection lines -->
+        <linearGradient id="blue-line-grad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#89b4fa"/> <!-- Lighter Blue -->
+            <stop offset="100%" stop-color="#1e66f5"/> <!-- Darker Blue -->
+        </linearGradient>
+
+        <!-- New dark blue gradient for dog paths -->
+        <linearGradient id="dark-blue-grad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#1c2a4a" />
+            <stop offset="100%" stop-color="#2e3f6b" />
+        </linearGradient>
+
+        <!-- UPDATED: Gradient for the phone body, now a darker, more dramatic 3D effect -->
         <linearGradient id="phone-grad" x1="0.5" y1="0" x2="0.5" y2="1">
-            <stop stop-color="#3a3a3e"/>
-            <stop offset="1" stop-color="#1c1c1e"/>
+            <stop stop-color="#4B5563"/> <!-- Mid-Dark Grey -->
+            <stop offset="1" stop-color="#1F2937"/> <!-- Very Dark Grey/Almost Black -->
         </linearGradient>
-        <linearGradient id="tag-grad" x1="0" y1="0" x2="1" y2="1">
-            <stop stop-color="#A78BFA"/>
-            <stop offset="1" stop-color="#3B82F6"/>
-        </linearGradient>
+
+        <!-- UPDATED: Darker, glassmorphism gradient for the phone screen -->
         <linearGradient id="screen-grad" x1="0.5" y1="0" x2="0.5" y2="1">
-            <stop stop-color="#EC4899" stop-opacity="0.8"/>
-            <stop offset="1" stop-color="#3B82F6" stop-opacity="0.8"/>
+            <stop stop-color="#3B82F6" stop-opacity="0.6">
+                <animate attributeName="stop-color" values="#3B82F6; #EC4899; #3B82F6" dur="5s" repeatCount="indefinite" />
+            </stop>
+            <stop offset="1" stop-color="#1F2937" stop-opacity="0.8">
+                <animate attributeName="stop-color" values="#1F2937; #4B0082; #1F2937" dur="5s" repeatCount="indefinite" />
+            </stop>
         </linearGradient>
+
+        <!-- Gradient for the checkmark circle -->
         <linearGradient id="green-grad" x1="0.5" y1="0" x2="0.5" y2="1">
             <stop stop-color="#22c55e"/>
             <stop offset="1" stop-color="#16a34a"/>
         </linearGradient>
-        <filter id="glow">
-            <feGaussianBlur stdDeviation="15" result="blur"/>
+
+        <!-- Filter for the glowing effect -->
+        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="12" result="blur"/>
             <feMerge>
                 <feMergeNode in="blur" />
                 <feMergeNode in="SourceGraphic" />
             </feMerge>
         </filter>
-        <pattern id="qr-pattern" patternUnits="userSpaceOnUse" width="8" height="8">
-            <path d="M0 0 H4 V4 H0Z M4 4 H8 V8 H4Z" fill="#333"/>
-        </pattern>
-        <radialGradient id="bg-glow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#4F46E5" stop-opacity="0.1"/>
-            <stop offset="100%" stop-color="#111827" stop-opacity="0"/>
-        </radialGradient>
+        
+        <!-- Gradient for the dog, now also used for lines and phone border -->
+        <linearGradient id="dog-grad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#EE60C9"/>
+            <stop offset="100%" stop-color="#7B42F6"/>
+        </linearGradient>
     </defs>
 
     <!-- Main container with a subtle floating animation -->
     <g>
+        <!-- Background is now transparent -->
         <animateTransform attributeName="transform" type="translate" values="0 0; 0 -10; 0 0" dur="8s" repeatCount="indefinite" />
-        
-        <!-- Background Glow -->
-        <circle cx="400" cy="300" r="400" fill="url(#bg-glow)"/>
 
-        <!-- Floating Keys in Foreground -->
-        <g transform="translate(150, 300) rotate(-15)">
-            <!-- Keyring -->
-            <circle cx="0" cy="0" r="30" stroke="#9CA3AF" stroke-width="3" fill="none"/>
-            <!-- Key -->
-            <path d="M20,0 a20,20 0 1,0 40,0 a20,20 0 1,0 -40,0" fill="#4B5563" stroke="#9CA3AF" stroke-width="2" transform="translate(0, -20)"/>
-            <rect x="36" y="-50" width="8" height="30" fill="#4B5563" transform="translate(0, -20)"/>
-            <path d="M30 -60 H 50 V -50 H 30 Z" fill="#4B5563" transform="translate(0, -20)"/>
+        <!-- Floating Stylized Dog with animation and new face -->
+        <g transform="translate(-200, 50) rotate(-15)">
+            <animateTransform attributeName="transform" type="rotate" values="0; 2; -2; 0" dur="10s" repeatCount="indefinite" additive="sum"/>
+            <animateTransform attributeName="transform" type="translate" values="0 0; 5 -5; 0 0" dur="10s" repeatCount="indefinite" additive="sum"/>
 
-            <!-- Rectangular QR Sticker -->
-            <g transform="translate(40, 20) rotate(5)">
-                <rect x="0" y="0" width="40" height="25" rx="3" fill="white" filter="url(#glow)"/>
-                <rect x="2" y="2" width="36" height="21" fill="url(#qr-pattern)"/>
-                <text x="20" y="18" font-family="sans-serif" font-size="4" font-weight="bold" fill="#555" text-anchor="middle">TagSync</text>
-                <!-- Tag Pulse Animation -->
-                <circle cx="20" cy="12.5" r="30" fill="url(#tag-grad)" opacity="0">
-                     <animate attributeName="opacity" values="0; 0.4; 0" dur="2.5s" repeatCount="indefinite" />
-                </circle>
+            <!-- Main body and head with gradient fill -->
+            <g>
+                <path d="M208.2178,361.3024c8.9668,5.40744,9.85143,7.95929,15.28391,10.18927,2.74947,1.1286,7.89745,2.68118,17.83122,1.27365,13.68724-1.93924,22.12706-7.46704,45.8517-20.37854,16.92126-9.20883,25.19455-13.23581,36.9361-15.28391,8.79822-1.5347,13.91156-.97577,17.83121,0,13.6741,3.40399,21.13828,13.95084,22.92584,16.55756,6.17911,9.01044,6.96103,17.81039,7.64194,25.47318,.85767,9.65225,2.09705,23.60001-5.09464,34.38879-9.0119,13.51941-21.56308,7.52753-43.30438,20.37854-24.02975,14.20367-20.01099,28.21063-39.4834,35.66245-24.9166,9.53519-52.04308-5.53635-53.49365-6.36829-25.79733-14.79541-31.07559-41.64359-44.57805-39.4834-8.06726,1.29062-8.87068,11.3045-21.65219,14.01025-2.39169,.50623-12.23424,2.58994-19.10487-3.82098-4.22156-3.939-4.09065,4.879-1.91049-.63684,2.7991-7.08176,8.44638-20.90405,12.09976-28.65732,1.95161-4.14172-.24821-5.4202,1.27367-16.55756,.74333-5.43979,1.11858-8.18582,2.54732-11.46292,3.53989-8.11957,10.41402-12.31308,15.28391-15.28391,5.9248-3.61435,11.74979-7.16791,19.10487-6.36829,4.20897,.45758,7.47606,2.42776,14.01024,6.36829v-.00003Z" fill="url(#dog-grad)"/>
+                <path d="M363.60413,391.87021c2.25949,1.85095,2.79764,5.60257,3.82098,12.7366,.94672,6.6001,.37097,10.64838,0,17.83121-.55685,10.78149,.32117,9.77805,0,24.19952-.26428,11.86609-.39639,17.79919-1.27365,22.92584-1.57751,9.21863-2.41797,5.67657-10.18927,29.29416-1.57669,4.7916-2.83246,8.85901-6.36829,10.18927-4.43024,1.66669-9.53452-2.05664-10.18927-2.54733-1.07373-.8046-4.85757-3.64032-5.09464-7.64194-.30093-5.07956,5.44888-6.36673,10.18927-14.01025,2.9599-4.77264,3.67148-9.55011,5.09464-19.10489,1.35342-9.08664,2.03012-13.62994,0-17.83121-3.70425-7.66574-12.17871-10.04187-12.7366-10.18927-5.07162-1.34036-6.7103,.55768-12.7366,0-5.63687-.52179-14.92218-3.1745-16.55756-7.64194-4.48279-12.24591,45.2478-47.05136,56.04099-38.20975v-.00003Z" fill="url(#dark-blue-grad)"/>
+                <path d="M343.22562,374.039c2.25949,1.85095,2.79764,5.60257,3.82098,12.7366,.94672,6.6001,.37097,10.64838,0,17.83121-.55685,10.78149,.32117,9.77802,0,24.19952-.26428,11.86609-.39639,17.79919-1.27365,22.92584-1.57751,9.21863-2.41797,5.67657-10.18927,29.29416-1.57669,4.7916-2.83246,8.85901-6.36829,10.18927-4.43024,1.66669-9.53452-2.05664-10.18927-2.54733-1.07373-.8046-4.85757-3.64032-5.09464-7.64194-.30093-5.07956,5.44888-6.36673,10.18927-14.01025,2.9599-4.77264,3.67148-9.55011,5.09464-19.10489,1.35342-9.08664,2.03012-13.62994,0-17.83121-3.70425-7.66574-12.17871-10.04187-12.7366-10.18927-5.07162-1.34036-6.7103,.55768-12.7366,0-5.63687-.52179-14.92218-3.1745-16.55756-7.64194-4.48279-12.24591,45.2478-47.05136,56.04099-38.20975v-.00003Z" fill="url(#dark-blue-grad)"/>
+                <path d="M305.01584,436.44827c1.43365,2.18661,3.07849,7.82602,6.36829,19.10489,1.46704,5.02966,10.96622,38.12283,14.01025,48.39902,.87503,2.95404,2.00888,6.64145,5.09464,10.1893,2.59711,2.98608,3.98438,2.89233,5.09464,5.0946,2.8891,5.73083-2.74911,13.81531-3.82098,15.28387-1.24753,1.70947-7.04147,9.64838-15.28391,8.91559-.86096-.07648-6.43106-.57166-7.64194-3.82098-1.85614-4.98083,9.05679-9.65472,8.91562-17.83124-.08337-4.8291-3.95267-6.82959-8.91562-12.7366-10.64722-12.67252-6.10593-19.25616-14.01025-29.29416-11.82242-15.01385-33.79547-15.28857-36.9361-15.28391-8.13554,.01181-19.45821,.02844-26.74683,7.64194-10.16129,10.61417-5.96196,29.18314-10.18927,57.31464,0,.00018-.68538,4.56104-2.54732,11.46295-3.07268,11.38983-5.52406,14.33099-6.36829,15.28387-1.14696,1.29468-4.50305,4.98053-10.18927,6.36829-.78337,.19122-4.40572,1.02087-8.9156,0-2.99283-.67743-5.72136-1.2951-7.64195-3.82098-1.84209-2.42261-2.54063-6.07428-1.27367-8.91559,1.53329-3.43866,4.6925-2.88037,8.9156-6.36829,2.98055-2.46167,4.53438-5.88666,7.64195-12.73657,1.37573-3.03241,3.43633-7.63013,5.09464-14.01025,1.91927-7.38403,2.15474-13.08966,2.54732-24.19952,.33076-9.3595,.17102-17.13983,0-25.47318-.19916-9.70215-.47078-12.87106,0-19.10489,.49396-6.54056,.97491-12.90869,2.54732-16.55756,8.45905-19.62976,75.57986-23.38171,94.25073,5.09464v.00012Z" fill="url(#dog-grad)"/>
+                <path d="M358.50952,349.83948c5.44403-3.01096,6.22153-10.05588,7.64194-22.92584,1.0347-9.37521,1.65088-14.95819-1.27365-21.65219-3.94757-9.03549-11.35681-13.25244-12.7366-14.01025-1.50717-.82776-11.40106-6.07474-21.65219-2.54733-1.4306,.49225-5.21869,3.30682-12.7366,8.91562-8.97128,6.69324-10.28757,7.96954-11.46292,10.18927-3.14453,5.93872-2.8103,13.96515,0,15.28391,2.13483,1.00174,5.82382-1.80865,7.64194-3.82098,2.17352-2.40567,1.84647-3.86249,3.82098-6.36829,1.56503-1.98621,3.03723-2.67853,7.64194-5.09464,11.40524-5.98428,11.98254-6.77829,14.01025-6.36829,5.05307,1.02179,7.46222,7.16479,7.64194,7.64194,1.54224,4.09445,.48474,7.81827-1.27365,14.01025-.93045,3.27634-1.98755,5.80453-3.82098,10.18927-3.32019,7.94046-4.1944,8.53577-3.82098,10.18927,1.22488,5.42361,13.18854,10.34491,20.37854,6.36829h.00006Z" fill="url(#dark-blue-grad)"/>
+            </g>
+            <path d="M227.9595,372.12851c2.10568,.34763,3.12755,12.38785,0,22.92584-2.13879,7.20645-6.45296,14.50156-7.22279,15.78842-.60643,1.0137-1.19025,1.93802-2.96648,4.59012-8.68748,12.9715-13.07629,19.4502-15.28391,19.10489-2.94374-.46036,5.11345-7.42249,5.73146-14.07901,1.14902-12.37589,6.70575-13.90607,16.55756-31.84146,5.33112-9.70544,1.54047-16.76025,3.18414-16.48877l.00002-.00003Z" fill="url(#dark-blue-grad)"/>
+            <path d="M183.38145,368.30749c-1.0647-5.41928,4.98923-12.94586,11.46294-14.01025,9.43987-1.55197,17.63454,10.98795,20.37854,19.10489,3.77402,11.16364-.46425,20.75775-2.54732,25.47318-2.61263,5.91415-4.56618,6.30222-5.09464,6.36829-3.85362,.4823-8.42151-6.57602-10.18927-12.7366-1.55537-5.4202,.19978-6.16229-1.27367-10.18927-3.03349-8.29028-11.6002-8.22684-12.73659-14.01025v.00003Z" fill="url(#dark-blue-grad)"/>
+            <polygon points="226.08385 395.47726 478.81824 230.53847 475.0918 229.69266 222.35741 394.63147 226.08385 395.47726" fill="url(#dog-grad)"/>
+            
+            <!-- Animations for the ears -->
+            <polygon points="539.79462 80.05389 534.25928 59.75782 559.16809 50.53233 561.93573 68.98329 539.79462 80.05389" fill="url(#dog-grad)">
+                <animateTransform attributeName="transform" type="rotate" values="0 539 80; 5 539 80; -5 539 80; 0 539 80" dur="2s" repeatCount="indefinite"/>
+            </polygon>
+            <polygon points="644.96515 396.48813 662.49359 416.78421 654.19061 433.39004 635.73969 430.62241 626.51416 404.79105 644.96515 396.48813" fill="url(#dog-grad)">
+                <animateTransform attributeName="transform" type="rotate" values="0 644 396; 5 644 396; -5 644 396; 0 644 396" dur="2s" repeatCount="indefinite" begin="0.5s"/>
+            </polygon>
+            
+            <!-- New, more prominent facial features -->
+            <g transform="translate(480, 20)">
+                <!-- Eyes with animation -->
+                <path d="M-10,0 Q 0,10 10,0" stroke="#000" stroke-width="3" fill="none">
+                    <animate attributeName="d" values="M-10,0 Q 0,10 10,0; M-10,0 Q 0,5 10,0; M-10,0 Q 0,10 10,0" dur="2s" repeatCount="indefinite"/>
+                </path>
+                <path d="M-10,0 Q 0,10 10,0" stroke="#000" stroke-width="3" fill="none" transform="translate(20, 0)">
+                    <animate attributeName="d" values="M-10,0 Q 0,10 10,0; M-10,0 Q 0,5 10,0; M-10,0 Q 0,10 10,0" dur="2s" repeatCount="indefinite" begin="0.2s"/>
+                </path>
+                <!-- Nose -->
+                <path d="M10,10 Q 15,15 10,20 Q 5,15 10,10 Z" fill="#4A2C20">
+                    <animateTransform attributeName="transform" type="translate" values="0 0; 0 1; 0 0" dur="0.5s" repeatCount="indefinite" begin="2s"/>
+                </path>
+                <!-- Expressive, animated mouth -->
+                <path d="M5,25 C 10,35 15,35 20,25" stroke="#4A2C20" stroke-width="2" fill="none">
+                    <animate attributeName="d" values="M5,25 C 10,35 15,35 20,25; M5,25 C 10,30 15,30 20,25; M5,25 C 10,35 15,35 20,25" dur="2s" repeatCount="indefinite" />
+                </path>
             </g>
         </g>
-
-        <!-- Full, Realistic 3D iPhone -->
-        <g transform="translate(550, 300) rotate(-5) skewX(-5)">
-            <rect x="-130" y="-240" width="260" height="480" rx="40" fill="url(#phone-grad)" stroke="#4a4a4c"/>
-            <rect x="-115" y="-225" width="230" height="450" rx="25" fill="#000"/>
+        
+        <!-- UPDATED: Full, Realistic 3D iPhone with more attractive border and dark theme -->
+        <g transform="translate(550, 300) rotate(-5) skewX(-5)" filter="url(#glow)">
+            <!-- Phone body with new dark gradient and thicker, more attractive border -->
+            <rect x="-130" y="-240" width="260" height="480" rx="40" fill="url(#phone-grad)" stroke="url(#dog-grad)" stroke-width="12"/>
+            <!-- Inner rect to create the bezel -->
+            <rect x="-122" y="-232" width="244" height="464" rx="32" fill="#000"/>
             
-            <!-- Phone Screen Content with NEW Glassmorphism UI -->
+            <!-- Phone Screen Content with Dark Glassmorphism UI -->
             <g>
-                <rect x="-110" y="-220" width="220" height="440" rx="20" fill="url(#screen-grad)" stroke="white" stroke-opacity="0.1" opacity="0">
-                     <animate attributeName="opacity" from="0" to="1" dur="1s" begin="1s" fill="freeze"/>
+                <!-- Screen background with new dark glass gradient -->
+                <rect x="-122" y="-232" width="244" height="464" rx="32" fill="url(#screen-grad)" stroke="white" stroke-opacity="0.1" opacity="0">
+                    <animate attributeName="opacity" from="0" to="1" dur="1s" begin="1s" fill="freeze"/>
                 </rect>
+                
+                <!-- Frosted glass effect layer - MADE LONGER -->
+                <rect x="-110" y="-180" width="220" height="350" rx="25" fill="rgba(255, 255, 255, 0.1)" stroke="rgba(255, 255, 255, 0.2)" style="backdrop-filter: blur(10px);" opacity="0">
+                     <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="1.5s" fill="freeze"/>
+                </rect>
+
                 <g opacity="0">
                     <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="1.5s" fill="freeze"/>
-                    <!-- Animated Checkmark -->
-                    <circle cx="0" cy="-100" r="40" fill="#FFFFFF" fill-opacity="0.2"/>
-                    <circle cx="0" cy="-100" r="40" fill="url(#green-grad)" opacity="0">
+                    <!-- Animated Checkmark - BIGGER -->
+                    <circle cx="0" cy="-80" r="50" fill="url(#green-grad)" opacity="0">
                         <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="2.6s" fill="freeze"/>
                     </circle>
-                    <path d="M-20 -100 L -5 -85 L 25 -115" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="100" stroke-dashoffset="100">
-                        <animate attributeName="stroke-dashoffset" from="100" to="0" dur="0.8s" begin="1.8s" fill="freeze"/>
+                    <path d="M-25 -80 L -5 -65 L 30 -100" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="120" stroke-dashoffset="120">
+                        <animate attributeName="stroke-dashoffset" from="120" to="0" dur="0.8s" begin="1.8s" fill="freeze"/>
                     </path>
-                    <!-- Text Content -->
-                    <text x="0" y="15" font-family="sans-serif" font-size="28" fill="white" text-anchor="middle" font-weight="bold">Connected</text>
-                    <text x="0" y="45" font-family="sans-serif" font-size="14" fill="white" fill-opacity="0.8" text-anchor="middle">
-                        <tspan x="0" dy="0">Your Keys are digitally</tspan>
+                    <!-- Text Content - BIGGER and repositioned -->
+                    <text x="0" y="50" font-family="sans-serif" font-size="36" fill="white" text-anchor="middle" font-weight="bold">Connected</text>
+                    <text x="0" y="85" font-family="sans-serif" font-size="18" fill="white" fill-opacity="0.8" text-anchor="middle">
+                        <tspan x="0" dy="0">Your pet is digitally</tspan>
                         <tspan x="0" dy="1.4em">linked to TagSync.</tspan>
                     </text>
                 </g>
             </g>
             <!-- iPhone Dynamic Island -->
-            <rect x="-50" y="-210" width="100" height="25" rx="12.5" fill="#1c1c1e"/>
+            <rect x="-50" y="-220" width="100" height="25" rx="12.5" fill="#111"/>
         </g>
         
-        <!-- Animated Multi-Line Connection -->
+        <!-- Animated Multi-Line Connection with blue gradient -->
         <g filter="url(#glow)">
-            <path d="M220 330 C 350 250, 400 250, 450 200" stroke="url(#tag-grad)" stroke-width="3" stroke-dasharray="2 10" stroke-linecap="round">
-                 <animate attributeName="stroke-dashoffset" from="0" to="-20" dur="1.5s" repeatCount="indefinite"/>
+            <path d="M220 380 C 350 250, 400 250, 450 200" stroke="url(#blue-line-grad)" stroke-width="4" stroke-dasharray="2 10" stroke-linecap="round">
+                <animate attributeName="stroke-dashoffset" from="0" to="-20" dur="1.5s" repeatCount="indefinite"/>
             </path>
-            <path d="M220 330 C 320 350, 450 350, 500 300" stroke="url(#tag-grad)" stroke-width="2" stroke-dasharray="2 10" stroke-linecap="round" opacity="0.7">
-                 <animate attributeName="stroke-dashoffset" from="-5" to="-25" dur="1.5s" repeatCount="indefinite"/>
+            <path d="M220 380 C 320 350, 450 350, 500 300" stroke="url(#blue-line-grad)" stroke-width="3" stroke-dasharray="2 10" stroke-linecap="round" opacity="0.8">
+                <animate attributeName="stroke-dashoffset" from="-5" to="-25" dur="1.5s" repeatCount="indefinite"/>
             </path>
-            <path d="M220 330 C 300 400, 400 450, 450 400" stroke="url(#tag-grad)" stroke-width="2" stroke-dasharray="2 10" stroke-linecap="round" opacity="0.5">
-                 <animate attributeName="stroke-dashoffset" from="-10" to="-30" dur="1.5s" repeatCount="indefinite"/>
+            <path d="M220 380 C 300 400, 400 450, 450 400" stroke="url(#blue-line-grad)" stroke-width="3" stroke-dasharray="2 10" stroke-linecap="round" opacity="0.6">
+                <animate attributeName="stroke-dashoffset" from="-10" to="-30" dur="1.5s" repeatCount="indefinite"/>
             </path>
         </g>
     </g>

@@ -2,168 +2,231 @@
 
 import Image from 'next/image'
 import React, { useState, useCallback } from 'react'
-import { Icon } from '@iconify/react/dist/iconify.js'
 import { motion, LazyMotion, domAnimation } from 'framer-motion'
 import dynamic from 'next/dynamic'
 
-// Lazy load PreLoader only when modal is open
+// Icons
+import { MdQrCodeScanner } from "react-icons/md"
+import { IoPhonePortrait } from "react-icons/io5"
+import { TbWorld } from "react-icons/tb"
+
 const PreLoader = dynamic(() => import('../../shared/PreLoader'), { ssr: false })
 
-const AlertIcon = () => (
-  <svg className="w-6 h-6 mr-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
-  </svg>
-)
-
-const NoAppIcon = () => (
-  <svg className="w-6 h-6 mr-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
-  </svg>
-)
-
-const GlobeIcon = () => (
-  <svg className="w-6 h-6 mr-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2h1a2 2 0 002-2v-1a2 2 0 012-2h1.945M7.7 9a9 9 0 0110 0M1.6 15a15.17 15.17 0 0118.8 0"></path>
-  </svg>
+// Animated background blobs
+const AnimatedBg = () => (
+  <>
+    <motion.div className="absolute top-0 left-0 w-[400px] h-[400px] bg-sky-300 rounded-full mix-blend-multiply filter blur-3xl opacity-40"
+      animate={{ x: [0, 60, -60, 0], y: [0, -50, 50, 0] }}
+      transition={{ duration: 20, repeat: Infinity, ease: 'linear' }} />
+    <motion.div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-violet-300 rounded-full mix-blend-multiply filter blur-3xl opacity-40"
+      animate={{ x: [0, -80, 80, 0], y: [0, 60, -60, 0] }}
+      transition={{ duration: 24, repeat: Infinity, ease: 'linear' }} />
+    <motion.div className="absolute bottom-0 left-1/4 w-[450px] h-[450px] bg-orange-300 rounded-full mix-blend-multiply filter blur-3xl opacity-40"
+      animate={{ x: [0, 80, -80, 0], y: [0, -80, 80, 0] }}
+      transition={{ duration: 22, repeat: Infinity, ease: 'linear' }} />
+  </>
 )
 
 const Banner = () => {
   const [isOpen, setOpen] = useState(false)
   const [isVideoLoading, setVideoLoading] = useState(true)
 
-  const openModal = useCallback(() => {
-    setOpen(true)
-    setVideoLoading(true)
-  }, [])
-
+  const openModal = useCallback(() => { setOpen(true); setVideoLoading(true) }, [])
   const closeModal = useCallback(() => setOpen(false), [])
 
-  const fadeUp = {
-    hidden: { y: 20, opacity: 0 },
-    visible: { y: 0, opacity: 1, transition: { duration: 0.6, ease: 'easeOut' } }
-  }
-
-  const floatAnimation = {
-    animate: {
-      y: [0, -6, 0],
-      transition: { duration: 3.5, repeat: Infinity, ease: 'easeInOut' }
-    }
-  }
+  const features = [
+    { icon: <MdQrCodeScanner size={22} />, text: "Instant Alerts" },
+    { icon: <IoPhonePortrait size={22} />, text: "No App Needed" },
+    { icon: <TbWorld size={22} />, text: "Global Peace" },
+  ]
 
   return (
     <LazyMotion features={domAnimation}>
-  <section className="relative pb-0 overflow-hidden hide-scrollbar" id="home-section">
-        {/* Static gradient background instead of animating blur for performance */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/30 via-secondary/20 to-black/10"></div>
+      <motion.section 
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.8, ease: "easeInOut" }}
+        className="relative w-full font-sans min-h-screen flex items-center overflow-hidden
+                   bg-gradient-to-br from-slate-50 via-sky-100 to-violet-100
+                   pt-24 sm:pt-28 pb-16 sm:pb-20"
+        style={{
+          // Add padding top for mobile so nav bar doesn't overlap
+          paddingTop: '6rem'
+        }}
+      >
+        <AnimatedBg />
 
-        <div className="container lg:pt-20 pt-10 relative">
-          <div className="grid grid-cols-1 lg:grid-cols-12 my-16 items-center">
-            
-            {/* LEFT CONTENT */}
-            <motion.div 
-              className="lg:col-span-7 mb-16"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
+        <div className="relative z-10 w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center px-6 lg:px-10">
+          {/* LEFT CONTENT */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+            className="flex flex-col justify-center text-center lg:text-left"
+          >
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold drop-shadow-lg mb-4">
+              <span className="bg-gradient-to-r from-fuchsia-600 via-indigo-600 to-cyan-500 text-transparent bg-clip-text animate-gradient-text">
+                The Future of Finding<br className="hidden lg:block" />is Here.
+              </span>
+            </h1>
+            <motion.p
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.7, delay: 0.1, ease: "easeInOut" }}
+              className="text-slate-700 text-base sm:text-lg mb-8 max-w-xl mx-auto lg:mx-0"
             >
-              <motion.h1 variants={fadeUp} className="mb-5 lg:text-start text-center sm:leading-snug leading-tight capitalize">
-                The Future of Finding <br /> is Here.
-              </motion.h1>
-              <motion.p variants={fadeUp} className="text-white font-normal mb-10 max-w-[80%] lg:text-start text-center lg:mx-0 mx-auto">
-                Never lose your valuables again. TagSync is the smart, simple, and secure way to connect your physical items to the digital world.
-              </motion.p>
+              Never lose your valuables again. TagSync is the smart, simple, and secure way to connect your physical items to the digital world.
+            </motion.p>
 
-              {/* Benefits */}
-              <motion.div variants={fadeUp} className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 mb-10 justify-center lg:justify-start text-white">
-                <div className="flex items-center bg-white/5 border border-white/10 rounded-lg px-4 py-2 hover:bg-white/10 transition"><AlertIcon /> <span>Instant & Anonymous Alerts</span></div>
-                <div className="flex items-center bg-white/5 border border-white/10 rounded-lg px-4 py-2 hover:bg-white/10 transition"><NoAppIcon /> <span>No App Needed</span></div>
-                <div className="flex items-center bg-white/5 border border-white/10 rounded-lg px-4 py-2 hover:bg-white/10 transition"><GlobeIcon /> <span>Global Peace of Mind</span></div>
-              </motion.div>
-
-              {/* Buttons */}
-              <motion.div variants={fadeUp} className="flex align-middle justify-center lg:justify-start">
-                <motion.button 
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="text-xl font-semibold text-white py-4 px-6 lg:px-12 bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary rounded-xl mr-6 cursor-pointer shadow-lg shadow-primary/30"
+            {/* Feature Cards */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.7, delay: 0.2, ease: "easeInOut" }}
+              className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10"
+            >
+              {features.map((feature, index) => (
+                <motion.div
+                  key={index}
+                  whileHover={{ scale: 1.02 }}
+                  className="glass-gradient-card flex items-center sm:flex-row justify-center sm:justify-start gap-2 px-4 
+                             py-2 sm:py-3 h-[55px] sm:h-[65px] text-center sm:text-left"
                 >
-                  Get Your TagSync
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  onClick={openModal}
-                  className="bg-transparent flex justify-center items-center text-white cursor-pointer"
-                >
-                  <Image
-                    src={'/images/banner/playbutton.svg'}
-                    alt='button-image'
-                    className='mr-3'
-                    width={47}
-                    height={47}
-                  />
-                  <span className="hover:text-primary">How It Works</span>
-                </motion.button>
-              </motion.div>
+                  <div className="text-fuchsia-500">{feature.icon}</div>
+                  <p className="text-sm font-semibold text-slate-800">{feature.text}</p>
+                </motion.div>
+              ))}
             </motion.div>
 
-            {/* RIGHT IMAGE */}
-            <motion.div 
-              className="lg:col-span-5 lg:-m-48 -m-20 overflow-hidden will-change-transform"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
+            {/* Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.7, delay: 0.3, ease: "easeInOut" }}
+              className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6"
             >
-              <motion.div variants={floatAnimation} animate="animate" style={{ willChange: 'transform' }}>
-                <Image
-                  src="/images/banner/banner.svg" 
-                  alt="TagSync Product Showcase"
-                  width={1013}
-                  height={760}
-                  priority
-                />
-              </motion.div>
+              <button
+                className={`group relative text-base font-semibold text-white py-3 px-8 bg-gradient-to-r from-fuchsia-600 to-indigo-600 rounded-xl shadow-lg shadow-violet-500/30 hover:shadow-xl hover:shadow-violet-500/50 w-full sm:w-auto overflow-hidden`}
+              >
+                <span className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-indigo-500 to-fuchsia-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                <span className="relative">Get Your TagSync</span>
+              </button>
+              <button onClick={openModal} className="group flex items-center text-slate-700 font-semibold cursor-pointer">
+                <div className="mr-3 w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-br from-fuchsia-500 via-indigo-500 to-cyan-400 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <Image src={'/images/banner/playbutton.svg'} alt='play button' width={20} height={20} />
+                </div>
+                <span className="group-hover:text-violet-600 transition-colors">How It Works</span>
+              </button>
             </motion.div>
-          </div>
+          </motion.div>
+
+          {/* RIGHT CONTENT (IMAGE) */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.9, ease: "easeInOut" }}
+            animate={{ y: [0, -10, 0], transition: { duration: 6, repeat: Infinity, ease: 'easeInOut' } }}
+            className="relative flex items-center justify-center lg:justify-end"
+          >
+            <Image
+              src="/images/banner/banner.svg"
+              alt="TagSync Product Showcase"
+              width={1300}
+              height={1300}
+              className="w-[100%] sm:w-[90%] lg:w-[130%] max-w-none mx-auto h-auto"
+              priority
+            />
+          </motion.div>
         </div>
 
-        {/* MODAL */}
+        {/* VIDEO MODAL */}
         {isOpen && (
-          <div className="fixed top-0 left-0 w-full h-full bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-gradient-to-br from-primary to-secondary rounded-lg sm:m-0 m-4 relative">
+          <div className="fixed top-0 left-0 w-full h-full bg-black/50 backdrop-blur-lg flex items-center justify-center z-50 p-4">
+            <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
+              className="bg-white/30 backdrop-blur-xl rounded-2xl shadow-2xl w-full max-w-4xl relative border border-white/20"
+            >
               {isVideoLoading && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/50 z-50">
+                <div className="absolute inset-0 flex items-center justify-center bg-black/20 z-50 rounded-2xl">
                   <PreLoader />
                 </div>
               )}
-
-              <div className="overlay flex items-center justify-between border-b border-solid border-border p-5 z-40 backdrop-blur-sm">
-                <h3 className="text-white">How It Works</h3>
-                <button onClick={closeModal} className="inline-block dark:invert text-1xl text-white hover:cursor-pointer hover:text-primary" aria-label="Close">
-                  X
-                </button>
+              <div className="flex items-center justify-between p-4 border-b border-white/20">
+                <h3 className="text-slate-800 font-semibold">How It Works</h3>
+                <button onClick={closeModal} className="text-3xl leading-none text-orange-500 hover:text-violet-500">&times;</button>
               </div>
-
-              <iframe
-                height="400"
-                className="p-4 md:w-[50rem] w-full"
-                src="/videos/howItWorks.mp4"
-                title="How TagSync Works"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
-                onLoad={() => setVideoLoading(false)}
-              ></iframe>
-             
-            
-             
-            </div>
+              <div className="p-2 sm:p-4">
+                <iframe className="w-full aspect-video rounded-lg"
+                  src="/videos/howItWorks.mp4"
+                  title="How TagSync Works"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  onLoad={() => setVideoLoading(false)}
+                ></iframe>
+              </div>
+            </motion.div>
           </div>
         )}
-      </section>
+
+        {/* GLOBAL STYLES */}
+        <style jsx global>{`
+          html, body {
+            overscroll-behavior: contain;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+          }
+          .animate-gradient-text {
+            background-size: 300% 300%;
+            animation: gradient-text 4s cubic-bezier(0.4,0,0.2,1) infinite;
+          }
+          @keyframes gradient-text {
+            0%,100% { background-position: left center; }
+            50% { background-position: right center; }
+          }
+          .glass-gradient-card {
+            position: relative;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            border: 1.2px solid transparent;
+            transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+            overflow: hidden;
+          }
+          .glass-gradient-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1.2px;
+            background: linear-gradient(135deg, #a855f7, #6366f1, #22d3ee);
+            background-size: 300% 300%;
+            animation: gradient-move 6s cubic-bezier(0.4,0,0.2,1) infinite;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+          }
+          .glass-gradient-card:hover {
+            background: rgba(255, 255, 255, 0.35);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.25);
+          }
+          @keyframes gradient-move {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+          }
+        `}</style>
+      </motion.section>
     </LazyMotion>
   )
 }
+
+
 
 
 export default Banner

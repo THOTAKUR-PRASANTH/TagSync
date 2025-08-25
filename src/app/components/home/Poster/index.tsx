@@ -158,8 +158,26 @@ export default function TagSyncHeroPage() {
     setMounted(true);
   }, []);
 
+  // Fade animation variant for all children (fast and smooth)
+  const fadeVariant = {
+    hidden: { opacity: 0, y: 24 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5, ease: "easeOut" },
+    },
+  };
+
   return (
-    <main className="relative flex flex-col items-center justify-center min-h-screen w-full bg-gradient-to-br from-gray-100 via-sky-100 to-purple-100 text-slate-800 overflow-hidden p-4 sm:p-6">
+    <main
+      className="relative flex flex-col items-center justify-center min-h-screen w-full bg-gradient-to-br from-gray-100 via-sky-100 to-purple-100 text-slate-800 overflow-hidden p-4 sm:p-6"
+      style={{
+        overscrollBehavior: "contain",
+        WebkitOverflowScrolling: "touch",
+        scrollBehavior: "smooth",
+        paddingTop: "5rem",
+      }}
+    >
       {/* Multiple animated orbs for depth */}
       <GradientOrb className="top-0 -left-48" color="bg-blue-300" delay={0} />
       <GradientOrb
@@ -203,26 +221,28 @@ export default function TagSyncHeroPage() {
       <div className="z-10 max-w-7xl w-full flex flex-col items-center gap-8 sm:gap-12">
         {/* Animated Header */}
         <motion.div
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: "easeOut" }}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={fadeVariant}
           className="text-center space-y-4"
         >
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={fadeVariant}
           >
             <span className="inline-block px-6 py-2 text-sm font-medium tracking-wider text-purple-600 uppercase bg-white/40 backdrop-blur-xl rounded-full border border-purple-300/50 shadow-lg shadow-purple-500/10">
               The Heart of TagSync
             </span>
           </motion.div>
-
           <motion.h1
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={fadeVariant}
             className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.8 }}
           >
             <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text animate-gradient-text">
               Kindness in Every
@@ -239,7 +259,13 @@ export default function TagSyncHeroPage() {
           {/* Main Poster Card */}
           <GlassCard className="lg:col-span-3" delay={0.2}>
             <FloatingElement delay={0}>
-              <div className="space-y-6">
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.3 }}
+                variants={fadeVariant}
+                className="space-y-6"
+              >
                 <div className="text-center">
                   <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-slate-900 via-slate-700 to-slate-900 text-transparent bg-clip-text leading-tight">
                     Everything you love finds its way home
@@ -272,14 +298,20 @@ export default function TagSyncHeroPage() {
                     </span>
                   </motion.div>
                 </div>
-              </div>
+              </motion.div>
             </FloatingElement>
           </GlassCard>
 
           {/* Product Showcase Card */}
           <GlassCard className="lg:col-span-2" delay={0.4}>
             <FloatingElement delay={0.5}>
-              <div className="h-full flex flex-col justify-center space-y-4">
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.3 }}
+                variants={fadeVariant}
+                className="h-full flex flex-col justify-center space-y-4"
+              >
                 <div className="text-center">
                   <h3 className="text-xl sm:text-2xl font-bold text-slate-900">
                     Smart Tags for Your Belongings
@@ -313,17 +345,20 @@ export default function TagSyncHeroPage() {
                     </motion.span>
                   ))}
                 </div>
-              </div>
+              </motion.div>
             </FloatingElement>
           </GlassCard>
         </div>
-
-    
         <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
           {featureItems.map((item, index) => (
             <GlassCard key={item.title} delay={0.6 + index * 0.1}>
-              <div className="text-center space-y-4">
-            
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.3 }}
+                variants={fadeVariant}
+                className="text-center space-y-4"
+              >
                 <motion.div
                   className="text-5xl mx-auto w-fit"
                   animate={{
@@ -355,12 +390,19 @@ export default function TagSyncHeroPage() {
                   animate={{ width: "80%" }}
                   transition={{ delay: 1 + index * 0.2, duration: 0.6 }}
                 />
-              </div>
+              </motion.div>
             </GlassCard>
           ))}
         </div>
       </div>
       <style jsx global>{`
+        html,
+        body {
+          overscroll-behavior: contain;
+          scroll-behavior: smooth;
+          -webkit-overflow-scrolling: touch;
+        }
+
         @keyframes gradient {
           0%,
           100% {
