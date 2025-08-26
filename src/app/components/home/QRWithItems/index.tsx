@@ -81,7 +81,7 @@ const ImageGallery = () => {
           { imgSrc: `/images/itemswithqr/qr.png` },
           { imgSrc: `/images/itemswithqr/glass.png` },
           { imgSrc: `/images/itemswithqr/passport2.png` },
-          { imgSrc: `/images/itemswithqr/gadegts.png` },
+          { imgSrc: `/images/itemswithqr/gadgets.png` }, // fixed typo: 'gadegts' -> 'gadgets'
           { imgSrc: `/images/itemswithqr/catqr.png` },
           { imgSrc: `/images/itemswithqr/giftbox.png` },
           { imgSrc: `/images/itemswithqr/whitedog.png` },
