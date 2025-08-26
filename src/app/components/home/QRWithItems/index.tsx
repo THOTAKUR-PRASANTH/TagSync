@@ -1,85 +1,136 @@
 'use client'
-
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import PreLoader from '../../shared/PreLoader'
 
-// This component displays images with an animated, glassmorphic border effect.
-const QRWithItems = () => {
-  // State to hold the fetched image data.
-  const [qrItems, setQrItems] = useState<{ imgSrc: string }[]>([])
-  // State to handle the loading status, providing a better user experience.
+// Gallery image with scroll-triggered fade animation
+const GalleryImage = ({ src, alt, index }: { src: string, alt: string, index: number }) => {
+  const [isVisible, setIsVisible] = useState(false)
+  const imgRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true)
+            observer.unobserve(entry.target) // stop observing once visible
+          }
+        })
+      },
+      {
+        threshold: 0.2, // trigger when 20% visible
+      }
+    )
+
+    if (imgRef.current) observer.observe(imgRef.current)
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <div
+      ref={imgRef}
+      className={`gallery-card relative aspect-square transition-all duration-500 ease-in-out transform m-0 p-0 
+      ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      style={{
+        transitionDelay: `${index * 100}ms`, // stagger for web view
+      }}
+    >
+      <div className="relative w-full h-full overflow-hidden bg-white/60 p-0.5 shadow-lg backdrop-blur-lg">
+        <div className="animate-spin-slow absolute inset-0 -z-10">
+          <div className="absolute inset-0 bg-gradient-to-br from-cyan-300 via-purple-400 to-pink-400 blur-md opacity-75"></div>
+        </div>
+        <div className="relative w-full h-full bg-white/20 overflow-hidden">
+          <img
+            src={src}
+            alt={alt}
+            className="w-full h-full object-cover block"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src =
+                `https://placehold.co/600x600/FFC0CB/000000?text=Image+Not+Found`
+            }}
+          />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const ImageGallery = () => {
+  const [galleryImages, setGalleryImages] = useState<{ imgSrc: string }[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  // State for error handling
   const [error, setError] = useState<string | null>(null)
 
-  // useEffect to fetch data when the component mounts.
   useEffect(() => {
-    const fetchData = async () => {
+    const loadImages = async () => {
       setIsLoading(true)
+      setError(null)
       try {
-        const res = await fetch('/api/page-data')
-        if (!res.ok) throw new Error('Failed to fetch page data.')
-        const data = await res.json()
-        setQrItems(data?.QRWithItems || [])
+        await new Promise((resolve) => setTimeout(resolve, 1500))
+        const placeholderImages = [
+          { imgSrc: `/images/itemsWithQr/Qr.png` },
+          { imgSrc: `/images/itemsWithQr/glass.png` },
+          { imgSrc: `/images/itemsWithQr/passPort2.png` },
+          { imgSrc: `/images/itemsWithQr/Gadegts.png` },
+          { imgSrc: `/images/itemsWithQr/CatQr.png` },
+          { imgSrc: `/images/itemsWithQr/GiftBox.png` },
+          { imgSrc: `/images/itemsWithQr/WhiteDog.png` },
+          { imgSrc: `/images/itemsWithQr/BlackBag.png` },
+          { imgSrc: `/images/itemsWithQr/pendriveQr.png` },
+        ]
+        setGalleryImages(placeholderImages)
       } catch (e: any) {
-        console.error('Error fetching data:', e)
-        setError(e.message)
+        console.error('Error processing image data:', e)
+        setError('There was an issue loading the image data.')
       } finally {
         setIsLoading(false)
       }
     }
-    fetchData()
+    loadImages()
   }, [])
 
-  // If there's an error, display an error message.
   if (error) {
     return (
-      <div className="flex justify-center items-center h-screen bg-black">
-        <p className="text-red-500 font-medium">
-          There was an error loading the images: {error}
-        </p>
+      <div className="flex justify-center items-center h-screen bg-[#f0f2f5] p-4">
+        <p className="text-red-600 bg-red-100 p-4 rounded-lg font-medium text-center">{error}</p>
       </div>
     )
   }
 
-  // If data is still loading, display a loading indicator.
   if (isLoading) {
-    return (
-       <PreLoader />
-    )
+    return <PreLoader />
   }
 
   return (
-    <section className="m-0 p-0">
-      <div className="w-full min-h-screen">
-        {/* Grid layout with fewer columns for bigger images */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {qrItems.map((item, i) => (
-            <div
-              key={i}
-              className="relative w-full aspect-square overflow-hidden group
-                         // Glassmorphic and border effects, now with no rounded corners.
-                         bg-white/10 backdrop-blur-sm border border-white/20 shadow-md
-                         // Animated transitions for hover effects
-                         transition-all duration-500 ease-in-out
-                         // Hover effects: a very thin, subtle glow is added.
-                         hover:shadow-md hover:shadow-blue-500/70"
-            >
-              <img
-                src={item.imgSrc}
-                alt={`QR code image ${i + 1}`}
-                className="absolute inset-0 w-full h-full object-cover
-                           // Animated transitions for hover effects
-                           transition-transform duration-500 ease-in-out
-                           // Hover effects
-                           group-hover:scale-105"
-              />
-            </div>
-          ))}
-        </div>
+    <section className="w-full h-full m-0 p-0">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-0 m-0 p-0">
+        {galleryImages.map((item, i) => (
+          <GalleryImage
+            key={i}
+            src={item.imgSrc}
+            alt={`Gallery image ${i + 1}`}
+            index={i}
+          />
+        ))}
       </div>
+
+      <style>
+        {`
+          .gallery-card {
+            transition-property: opacity, transform;
+          }
+
+          @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+          }
+
+          .animate-spin-slow {
+            animation: spin-slow 10s linear infinite;
+          }
+        `}
+      </style>
     </section>
   )
 }
 
-export default QRWithItems
+export default ImageGallery
