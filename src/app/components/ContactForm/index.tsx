@@ -92,7 +92,7 @@ const ContactForm = () => {
                     name='firstname'
                     value={formData.firstname}
                     onChange={handleChange}
-                    placeholder='John'
+                    placeholder='Doraaaa'
                     className='w-full text-base px-4 rounded-2xl py-2.5 border-lightblue/35 border transition-all duration-500 focus:border-primary focus:outline-0 placeholder:text-lightsky/40 text-white'
                   />
                 </div>
@@ -108,7 +108,7 @@ const ContactForm = () => {
                     name='lastname'
                     value={formData.lastname}
                     onChange={handleChange}
-                    placeholder='Doe'
+                    placeholder='Dora'
                     className='w-full text-base px-4 rounded-2xl py-2.5 border-lightblue/35 border transition-all duration-500 focus:border-primary focus:outline-0 placeholder:text-lightsky/40 text-white'
                   />
                 </div>
@@ -126,7 +126,7 @@ const ContactForm = () => {
                     name='email'
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder='john.doe@example.com'
+                    placeholder='dora@gmail.com'
                     className='w-full text-base px-4 rounded-2xl py-2.5 border-lightblue/35 border transition-all duration-500 focus:border-primary focus:outline-0 placeholder:text-lightsky/40 text-white'
                   />
                 </div>

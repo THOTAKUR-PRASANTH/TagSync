@@ -32,13 +32,9 @@ export default function Home() {
     <HeroComponent />
       {poster()}
       <QRWithItems />
-      <Work />
-      <Table />
-      <Features />
-      <Simple />
-      <Trade />
+      
       <>
-        <Faq />
+       
         <ContactForm />
       </>
     </main>
