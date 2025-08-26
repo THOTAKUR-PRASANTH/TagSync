@@ -3,7 +3,15 @@ import React, { useEffect, useState, useRef } from 'react'
 import PreLoader from '../../shared/PreLoader'
 
 // Gallery image with scroll-triggered fade animation
-const GalleryImage = ({ src, alt, index }: { src: string, alt: string, index: number }) => {
+const GalleryImage = ({
+  src,
+  alt,
+  index,
+}: {
+  src: string
+  alt: string
+  index: number
+}) => {
   const [isVisible, setIsVisible] = useState(false)
   const imgRef = useRef<HTMLDivElement | null>(null)
 
@@ -13,12 +21,12 @@ const GalleryImage = ({ src, alt, index }: { src: string, alt: string, index: nu
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setIsVisible(true)
-            observer.unobserve(entry.target) // stop observing once visible
+            observer.unobserve(entry.target)
           }
         })
       },
       {
-        threshold: 0.2, // trigger when 20% visible
+        threshold: 0.2,
       }
     )
 
@@ -29,23 +37,24 @@ const GalleryImage = ({ src, alt, index }: { src: string, alt: string, index: nu
   return (
     <div
       ref={imgRef}
-      className={`gallery-card relative aspect-square transition-all duration-500 ease-in-out transform m-0 p-0 
-      ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      className={`gallery-card relative aspect-square m-0 p-0 transform transition-all duration-500 ease-in-out
+       ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
       style={{
-        transitionDelay: `${index * 100}ms`, // stagger for web view
+        transitionDelay: `${index * 100}ms`,
       }}
     >
-      <div className="relative w-full h-full overflow-hidden bg-white/60 p-0.5 shadow-lg backdrop-blur-lg">
+      {/* CHANGE: Removed margin (m-2), rounded corners, and restored original padding (p-0.5) for a gapless look */}
+      <div className="relative h-full w-full overflow-hidden bg-white/40 p-0.5 shadow-lg backdrop-blur-lg">
         <div className="animate-spin-slow absolute inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-br from-cyan-300 via-purple-400 to-pink-400 blur-md opacity-75"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-cyan-300 via-purple-400 to-pink-400 opacity-75 blur-md"></div>
         </div>
-        <div className="relative w-full h-full bg-white/20 overflow-hidden">
+        <div className="relative h-full w-full overflow-hidden bg-white/20">
           <img
             src={src}
             alt={alt}
-            className="w-full h-full object-cover block"
+            className="block h-full w-full object-cover"
             onError={(e) => {
-              (e.target as HTMLImageElement).src =
+              ;(e.target as HTMLImageElement).src =
                 `https://placehold.co/600x600/FFC0CB/000000?text=Image+Not+Found`
             }}
           />
@@ -66,6 +75,8 @@ const ImageGallery = () => {
       setError(null)
       try {
         await new Promise((resolve) => setTimeout(resolve, 1500))
+        // IMPORTANT: Ensure these paths EXACTLY match your folder structure inside the /public directory.
+        // Vercel is case-sensitive.
         const placeholderImages = [
           { imgSrc: `/images/itemsWithQr/Qr.png` },
           { imgSrc: `/images/itemsWithQr/glass.png` },
@@ -90,8 +101,10 @@ const ImageGallery = () => {
 
   if (error) {
     return (
-      <div className="flex justify-center items-center h-screen bg-[#f0f2f5] p-4">
-        <p className="text-red-600 bg-red-100 p-4 rounded-lg font-medium text-center">{error}</p>
+      <div className="flex h-screen items-center justify-center bg-[#f0f2f5] p-4">
+        <p className="rounded-lg bg-red-100 p-4 text-center font-medium text-red-600">
+          {error}
+        </p>
       </div>
     )
   }
@@ -101,11 +114,13 @@ const ImageGallery = () => {
   }
 
   return (
-    <section className="w-full h-full m-0 p-0">
+    // CHANGE: Removed padding and set h-full for an edge-to-edge background.
+    <section className="w-full h-full m-0 p-0 bg-gradient-to-br from-indigo-200 via-purple-200 to-pink-200">
+      {/* CHANGE: Restored original gap-0, m-0, p-0 for a seamless grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-0 m-0 p-0">
         {galleryImages.map((item, i) => (
           <GalleryImage
-            key={i}
+            key={item.imgSrc}
             src={item.imgSrc}
             alt={`Gallery image ${i + 1}`}
             index={i}
