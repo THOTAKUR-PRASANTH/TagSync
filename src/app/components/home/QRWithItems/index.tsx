@@ -2,6 +2,17 @@
 import React, { useEffect, useState, useRef } from 'react'
 import PreLoader from '../../shared/PreLoader'
 
+// Import images directly from /public
+import qrImg from '/public/images/itemswithqr/qr.png'
+import glassImg from '/public/images/itemswithqr/glass.png'
+import passportImg from '/public/images/itemswithqr/passport2.png'
+import gadgetsImg from '/public/images/itemswithqr/gadgets.png'
+import catqrImg from '/public/images/itemswithqr/catqr.png'
+import giftboxImg from '/public/images/itemswithqr/giftbox.png'
+import whitedogImg from '/public/images/itemswithqr/whitedog.png'
+import blackbagImg from '/public/images/itemswithqr/blackbag.png'
+import pendriveqrImg from '/public/images/itemswithqr/pendriveqr.png'
+
 // Gallery image with scroll-triggered fade animation
 const GalleryImage = ({
   src,
@@ -43,7 +54,6 @@ const GalleryImage = ({
         transitionDelay: `${index * 100}ms`,
       }}
     >
-      {/* CHANGE: Removed margin (m-2), rounded corners, and restored original padding (p-0.5) for a gapless look */}
       <div className="relative h-full w-full overflow-hidden bg-white/40 p-0.5 shadow-lg backdrop-blur-lg">
         <div className="animate-spin-slow absolute inset-0 -z-10">
           <div className="absolute inset-0 bg-gradient-to-br from-cyan-300 via-purple-400 to-pink-400 opacity-75 blur-md"></div>
@@ -75,18 +85,16 @@ const ImageGallery = () => {
       setError(null)
       try {
         await new Promise((resolve) => setTimeout(resolve, 1500))
-        // IMPORTANT: Ensure these paths EXACTLY match your folder structure inside the /public directory.
-        // Vercel is case-sensitive.
         const placeholderImages = [
-          { imgSrc: `/images/itemswithqr/qr.png` },
-          { imgSrc: `/images/itemswithqr/glass.png` },
-          { imgSrc: `/images/itemswithqr/passport2.png` },
-          { imgSrc: `/images/itemswithqr/gadgets.png` }, // fixed typo: 'gadegts' -> 'gadgets'
-          { imgSrc: `/images/itemswithqr/catqr.png` },
-          { imgSrc: `/images/itemswithqr/giftbox.png` },
-          { imgSrc: `/images/itemswithqr/whitedog.png` },
-          { imgSrc: `/images/itemswithqr/blackbag.png` },
-          { imgSrc: `/images/itemswithqr/pendriveqr.png` },
+          { imgSrc: qrImg.src },
+          { imgSrc: glassImg.src },
+          { imgSrc: passportImg.src },
+          { imgSrc: gadgetsImg.src },
+          { imgSrc: catqrImg.src },
+          { imgSrc: giftboxImg.src },
+          { imgSrc: whitedogImg.src },
+          { imgSrc: blackbagImg.src },
+          { imgSrc: pendriveqrImg.src },
         ]
         setGalleryImages(placeholderImages)
       } catch (e: any) {
@@ -114,9 +122,7 @@ const ImageGallery = () => {
   }
 
   return (
-    // CHANGE: Removed padding and set h-full for an edge-to-edge background.
     <section className="w-full h-full m-0 p-0 bg-gradient-to-br from-indigo-200 via-purple-200 to-pink-200">
-      {/* CHANGE: Restored original gap-0, m-0, p-0 for a seamless grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-0 m-0 p-0">
         {galleryImages.map((item, i) => (
           <GalleryImage
