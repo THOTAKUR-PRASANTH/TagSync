@@ -82,7 +82,7 @@ const ImageGallery = () => {
           { imgSrc: `/images/ItemsWithQr/glass.png` },
           { imgSrc: `/images/ItemsWithQr/passPort2.png` },
           { imgSrc: `/images/ItemsWithQr/gadgets.png` }, // fixed typo: 'gadegts' -> 'gadgets'
-          { imgSrc: `/images/ItemsWithQr/CatQr.png` },
+          { imgSrc: `/images/ItemsWithQr/CatQR.png` },
           { imgSrc: `/images/ItemsWithQr/GiftBox.png` },
           { imgSrc: `/images/ItemsWithQr/WhiteDog.png` },
           { imgSrc: `/images/ItemsWithQr/BlackBag.png` },
