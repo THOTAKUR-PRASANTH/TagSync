@@ -78,15 +78,15 @@ const ImageGallery = () => {
         // IMPORTANT: Ensure these paths EXACTLY match your folder structure inside the /public directory.
         // Vercel is case-sensitive.
         const placeholderImages = [
-          { imgSrc: `/images/itemsWithQr/Qr.png` },
-          { imgSrc: `/images/itemsWithQr/glass.png` },
-          { imgSrc: `/images/itemsWithQr/passPort2.png` },
-          { imgSrc: `/images/itemsWithQr/Gadegts.png` },
-          { imgSrc: `/images/itemsWithQr/CatQr.png` },
-          { imgSrc: `/images/itemsWithQr/GiftBox.png` },
-          { imgSrc: `/images/itemsWithQr/WhiteDog.png` },
-          { imgSrc: `/images/itemsWithQr/BlackBag.png` },
-          { imgSrc: `/images/itemsWithQr/pendriveQr.png` },
+          { imgSrc: `/images/itemswithqr/qr.png` },
+          { imgSrc: `/images/itemswithqr/glass.png` },
+          { imgSrc: `/images/itemswithqr/passport2.png` },
+          { imgSrc: `/images/itemswithqr/gadegts.png` },
+          { imgSrc: `/images/itemswithqr/catqr.png` },
+          { imgSrc: `/images/itemswithqr/giftbox.png` },
+          { imgSrc: `/images/itemswithqr/whitedog.png` },
+          { imgSrc: `/images/itemswithqr/blackbag.png` },
+          { imgSrc: `/images/itemswithqr/pendriveqr.png` },
         ]
         setGalleryImages(placeholderImages)
       } catch (e: any) {
