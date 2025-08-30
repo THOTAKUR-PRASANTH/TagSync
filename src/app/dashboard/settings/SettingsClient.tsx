@@ -9,7 +9,8 @@ const SettingsOptionCard = ({
   gradient,
   lightGradient,
   delay = 0,
-  darkMode
+  darkMode,
+  link,
 }: {
   icon: React.ReactElement;
   title: string;
@@ -18,6 +19,7 @@ const SettingsOptionCard = ({
   lightGradient: string;
   delay?: number;
   darkMode: boolean;
+  link:string
 }) => {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -70,8 +72,10 @@ const SettingsOptionCard = ({
           ${darkMode ? 'text-gray-300' : 'text-slate-700'}`}>
           {description}
         </p>
-        <button className={`flex items-center text-sm font-semibold transition-all duration-300 group-hover:translate-x-1
-          ${darkMode ? 'text-purple-400 hover:text-purple-300' : 'text-purple-600 hover:text-purple-800'}`}>
+        <button
+          onClick={() => window.location.href = link}
+          className={`flex items-center text-sm font-semibold transition-all duration-300 group-hover:translate-x-1
+            ${darkMode ? 'text-purple-400 hover:text-purple-300' : 'text-purple-600 hover:text-purple-800'}`}>
           Manage
           <ChevronRight className="w-4 h-4 ml-1 transform group-hover:translate-x-2 transition-transform duration-300" />
         </button>
@@ -239,7 +243,8 @@ export default function SettingsClient({user}:SettingsClientProps) {
       description: "Update your personal information, profile picture, and account details.",
       gradient: "from-pink-600 to-rose-600",
       lightGradient: "from-pink-500 to-rose-500",
-      delay: 0
+      delay: 0,
+      link: "settings/edit-profile",
     },
     {
       icon: <Lock />,
@@ -247,7 +252,8 @@ export default function SettingsClient({user}:SettingsClientProps) {
       description: "Manage passwords, two-factor authentication, and privacy settings.",
       gradient: "from-purple-600 to-indigo-600",
       lightGradient: "from-purple-500 to-indigo-500",
-      delay: 100
+      delay: 100,
+      link: "settings/privacy-security",
     },
     {
       icon: <Bell />,
@@ -255,7 +261,8 @@ export default function SettingsClient({user}:SettingsClientProps) {
       description: "Configure alerts, email preferences, and notification timing.",
       gradient: "from-blue-600 to-cyan-600",
       lightGradient: "from-blue-500 to-cyan-500",
-      delay: 200
+      delay: 200,
+      link: "settings/notifications",
     },
     {
       icon: <Palette />,
@@ -263,7 +270,8 @@ export default function SettingsClient({user}:SettingsClientProps) {
       description: "Customize themes, colors, and visual preferences for your experience.",
       gradient: "from-emerald-600 to-teal-600",
       lightGradient: "from-emerald-500 to-teal-500",
-      delay: 300
+      delay: 300,
+      link: "settings/appearance",
     },
     {
       icon: <Globe />,
@@ -271,7 +279,8 @@ export default function SettingsClient({user}:SettingsClientProps) {
       description: "Set your language, timezone, and regional formatting preferences.",
       gradient: "from-orange-600 to-red-600",
       lightGradient: "from-orange-500 to-red-500",
-      delay: 400
+      delay: 400,
+      link: "settings/language-region",
     },
     {
       icon: <Shield />,
@@ -279,7 +288,8 @@ export default function SettingsClient({user}:SettingsClientProps) {
       description: "Device management, session monitoring, and security analytics.",
       gradient: "from-violet-600 to-purple-600",
       lightGradient: "from-violet-500 to-purple-500",
-      delay: 500
+      delay: 500,
+      link: "settings/advanced-security",
     }
   ];
 
