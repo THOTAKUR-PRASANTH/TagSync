@@ -68,7 +68,7 @@ const Banner = () => {
           >
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold drop-shadow-lg mb-4">
               <span className="bg-gradient-to-r from-fuchsia-600 via-indigo-600 to-cyan-500 text-transparent bg-clip-text animate-gradient-text">
-                The Future of Finding<br className="hidden lg:block" />is Here.
+                The Future of Finding<br className="hidden lg:block" /> is Here.
               </span>
             </h1>
             <motion.p
@@ -137,8 +137,8 @@ const Banner = () => {
             <Image
               src="/images/banner/banner.svg"
               alt="TagSync Product Showcase"
-              width={1300}
-              height={1300}
+              width={2000}
+              height={2000}
               className="w-[100%] sm:w-[90%] lg:w-[130%] max-w-none mx-auto h-auto"
               priority
             />

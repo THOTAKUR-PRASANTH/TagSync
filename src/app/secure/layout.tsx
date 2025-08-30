@@ -9,7 +9,6 @@ export default function SecureLayout({ children }: { children: React.ReactNode }
     <PrivateLayout>
       <SecuredLayout>
         {children}
-       
       </SecuredLayout>
     </PrivateLayout>
   );

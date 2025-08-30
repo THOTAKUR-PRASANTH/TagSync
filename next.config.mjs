@@ -38,7 +38,7 @@ const securityHeaders = [
       // Allow inline styles for Tailwind and fonts
       "style-src 'self' 'unsafe-inline'",
       // Images from self, data and blob URIs
-      "img-src 'self' data: blob:",
+      "img-src 'self' data: blob: https://ik.imagekit.io/",
       // Fonts from self and data URIs
       "font-src 'self' data:",
       // Workers (e.g., Next.js/Remix or libraries may spawn blob workers)
