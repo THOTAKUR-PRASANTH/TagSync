@@ -2,16 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { User, Lock, Bell, ChevronRight, Settings, Palette, Globe, Shield, Mail, Phone, Camera, Eye, Moon, Sun } from 'lucide-react';
 
-type SettingsOptionCardProps = {
-  icon: React.ReactElement<any>;
-  title: string;
-  description: string;
-  gradient: string;
-  lightGradient: string;
-  delay?: number;
-  darkMode: boolean;
-};
-
 const SettingsOptionCard = ({
   icon,
   title,
@@ -20,7 +10,15 @@ const SettingsOptionCard = ({
   lightGradient,
   delay = 0,
   darkMode
-}: SettingsOptionCardProps) => {
+}: {
+  icon: React.ReactElement;
+  title: string;
+  description: string;
+  gradient: string;
+  lightGradient: string;
+  delay?: number;
+  darkMode: boolean;
+}) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -61,7 +59,7 @@ const SettingsOptionCard = ({
           <div className={`p-3 rounded-xl bg-gradient-to-br ${darkMode ? gradient : lightGradient} shadow-lg
             group-hover:scale-110 transform transition-all duration-300
             group-hover:shadow-xl`}>
-            {React.cloneElement(icon, { className: "w-6 h-6 text-white" })}
+            {React.isValidElement(icon) ? React.cloneElement(icon, { className: "w-6 h-6 text-white" } as any) : icon}
           </div>
           <h3 className={`text-lg font-bold transition-colors
             ${darkMode ? 'text-gray-100 group-hover:text-white' : 'text-slate-900 group-hover:text-slate-800'}`}>
@@ -82,20 +80,23 @@ const SettingsOptionCard = ({
   );
 };
 
-type ProfileHeaderProps = {
-  user: { id: string; name: string; email: string; avatar_url?: string };
+interface ProfileHeaderProps {
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    avatar_url?: string;
+  };
   darkMode: boolean;
-};
+}
 
-const ProfileHeader = ({ user, darkMode }: ProfileHeaderProps) => {
+const ProfileHeader = ({ user, darkMode }:ProfileHeaderProps) => {
   const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setImageLoaded(true), 3000);
+    const timer = setTimeout(() => setImageLoaded(true), 300);
     return () => clearTimeout(timer);
   }, []);
-
-  console.log(user.avatar_url);
 
   return (
     <div className="relative mb-12 text-center">
@@ -117,15 +118,19 @@ const ProfileHeader = ({ user, darkMode }: ProfileHeaderProps) => {
           <div className={`w-24 h-24 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 
             flex items-center justify-center text-white text-2xl font-bold shadow-xl
             transform transition-all duration-700 ${imageLoaded ? 'scale-100 rotate-0' : 'scale-0 rotate-180'}`}>
+            
             {user.avatar_url ? (
               <img
-                src={user.avatar_url} 
+                src={user.avatar_url}
+                alt={user.name}
                 className="w-full h-full object-cover rounded-full"
-                onLoad={() => setImageLoaded(true)}
-                onError={() => setImageLoaded(false)}
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src =
+                    `https://placehold.co/600x600/FFC0CB/000000?text=No+Image`
+                }}
               />
             ) : (
-              user.name.charAt(0).toUpperCase()
+              user.name ? user.name.charAt(0).toUpperCase() : 'U'
             )}
           </div>
           <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-green-400 rounded-full 
@@ -144,21 +149,39 @@ const ProfileHeader = ({ user, darkMode }: ProfileHeaderProps) => {
         </p>
         
         {/* Floating stats */}
-        
+        <div className="flex justify-center gap-8 mt-6">
+          <div className="text-center group cursor-pointer">
+            <div className={`text-2xl font-bold transition-all duration-300 group-hover:scale-110
+              ${darkMode ? 'text-purple-400' : 'text-purple-600'}`}>24</div>
+            <div className={`text-xs transition-colors duration-500
+              ${darkMode ? 'text-gray-400' : 'text-slate-600'}`}>Settings</div>
+          </div>
+          <div className="text-center group cursor-pointer">
+            <div className={`text-2xl font-bold transition-all duration-300 group-hover:scale-110
+              ${darkMode ? 'text-pink-400' : 'text-pink-600'}`}>100%</div>
+            <div className={`text-xs transition-colors duration-500
+              ${darkMode ? 'text-gray-400' : 'text-slate-600'}`}>Secure</div>
+          </div>
+          <div className="text-center group cursor-pointer">
+            <div className={`text-2xl font-bold transition-all duration-300 group-hover:scale-110
+              ${darkMode ? 'text-blue-400' : 'text-blue-600'}`}>5</div>
+            <div className={`text-xs transition-colors duration-500
+              ${darkMode ? 'text-gray-400' : 'text-slate-600'}`}>Devices</div>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
-
-type QuickSettingCardProps = {
-  icon: React.ReactElement;
+interface QuickSettingCardProps {
+  icon: React.ReactElement<any>;
   title: string;
   color: string;
   darkMode: boolean;
   delay: number;
-};
+}
 
-const QuickSettingCard = ({ icon, title, color, darkMode, delay }: QuickSettingCardProps) => {
+const QuickSettingCard = ({ icon, title, color, darkMode, delay }:QuickSettingCardProps) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -180,7 +203,7 @@ const QuickSettingCard = ({ icon, title, color, darkMode, delay }: QuickSettingC
     >
       <div className="flex items-center gap-3">
         <div className={`${color} group-hover:scale-110 transition-transform duration-300`}>
-          {React.cloneElement(icon as React.ReactElement<any>, { className: "w-5 h-5" })}
+          {React.isValidElement(icon) ? React.cloneElement(icon, { className: "w-5 h-5" } as any) : icon}
         </div>
         <span className={`text-sm font-semibold transition-colors duration-300
           ${darkMode 
@@ -197,16 +220,19 @@ const QuickSettingCard = ({ icon, title, color, darkMode, delay }: QuickSettingC
   );
 };
 
-type SettingsClientProps = {
-  user: { id: string; 
-     name: string;
-     email: string; 
-     avatar_url?: string };
-};
+interface SettingsClientProps {
+  user: {
+    id: string;
+    name: string;
+    email: string;
+  };
+}
 
 export default function SettingsClient({user}:SettingsClientProps) {
   const [darkMode, setDarkMode] = useState(false);
   
+ 
+
   const settingsOptions = [
     {
       icon: <User />,
@@ -271,14 +297,14 @@ export default function SettingsClient({user}:SettingsClientProps) {
   };
 
   return (
-    <div className={`min-h-screen w-full overflow-hidden relative transition-all duration-700
+    <div className={`min-h-screen w-full relative transition-all duration-700
       ${darkMode 
         ? 'bg-gradient-to-br from-gray-900 via-purple-900/20 to-blue-900/20' 
         : 'bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50'
       }`}>
       
       {/* Animated background elements */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div className={`absolute top-1/4 left-1/4 w-96 h-96 rounded-full 
           mix-blend-multiply filter blur-xl animate-pulse transition-all duration-700
           ${darkMode 
@@ -303,7 +329,7 @@ export default function SettingsClient({user}:SettingsClientProps) {
       </div>
 
       {/* Floating particles */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
         {[...Array(15)].map((_, i) => (
           <div
             key={i}
@@ -320,10 +346,10 @@ export default function SettingsClient({user}:SettingsClientProps) {
       </div>
 
       {/* Main content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-24">
         
         {/* Dark mode toggle */}
-        <div className="fixed top-6 right-6 z-50">
+        <div className="fixed top-6 right-6 z-30">
           <button
             onClick={toggleDarkMode}
             className={`p-3 rounded-full backdrop-blur-lg shadow-lg transition-all duration-300 
@@ -346,7 +372,17 @@ export default function SettingsClient({user}:SettingsClientProps) {
           </button>
         </div>
 
-       
+        {/* Page Title */}
+        <div className="mb-8">
+          <h1 className={`text-4xl sm:text-5xl font-bold mb-2 transition-colors duration-500
+            ${darkMode ? 'text-gray-100' : 'text-slate-900'}`}>
+            Settings
+          </h1>
+          <p className={`text-lg transition-colors duration-500
+            ${darkMode ? 'text-gray-400' : 'text-slate-600'}`}>
+            Customize your experience
+          </p>
+        </div>
 
         {/* Profile Header */}
         <ProfileHeader user={user} darkMode={darkMode} />
