@@ -13,8 +13,11 @@ const validateUserData = (data: any) => {
     errors.push('Full name must be at least 2 characters long');
   }
   
-  if (!data.phone || !/^[\+]?[1-9][\d]{0,15}$/.test(data.phone.replace(/\s/g, ''))) {
-    errors.push('Please provide a valid phone number');
+  // Phone is optional but if provided, must be valid
+  if (data.phone && data.phone.trim()) {
+    if (!/^[\+]?[1-9][\d]{0,15}$/.test(data.phone.replace(/\s/g, ''))) {
+      errors.push('Please provide a valid phone number');
+    }
   }
   
   if (!data.gender) {

@@ -1,12 +1,22 @@
 import { NextResponse } from "next/server";
 import ImageKit from "imagekit";
 
-// Initialize ImageKit with environment variables
-const imagekit = new ImageKit({
-  publicKey: process.env.IMAGEKIT_PUBLIC_KEY || "public_arDadiBV0Zg7Yn6twxNLjz33dTk=",
-  privateKey: process.env.IMAGEKIT_PRIVATE_KEY || "",
-  urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT || "https://ik.imagekit.io/jt0unlio3s",
-});
+// Initialize ImageKit only if environment variables are available
+let imagekit: ImageKit | null = null;
+
+try {
+  if (process.env.IMAGEKIT_PUBLIC_KEY && 
+      process.env.IMAGEKIT_PRIVATE_KEY && 
+      process.env.IMAGEKIT_URL_ENDPOINT) {
+    imagekit = new ImageKit({
+      publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
+      privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
+      urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
+    });
+  }
+} catch (error) {
+  console.warn("ImageKit initialization failed:", error);
+}
 
 // GET method for authentication parameters - this is what ImageKit needs
 export async function GET() {
@@ -15,25 +25,16 @@ export async function GET() {
     
     // Check if ImageKit is properly initialized
     if (!imagekit) {
-      throw new Error("ImageKit not initialized");
-    }
-    
-    // Check if private key is available
-    if (!process.env.IMAGEKIT_PRIVATE_KEY) {
-      console.warn("No private key provided, using fallback authentication");
-      // Return a basic authentication response when no private key is available
       return NextResponse.json({
-        token: "fallback-token",
-        expire: Math.floor(Date.now() / 1000) + 3600,
-        signature: "fallback-signature"
-      });
+        error: "ImageKit not configured",
+        message: "Please check environment variables"
+      }, { status: 503 });
     }
     
     // Get authentication parameters from ImageKit
     const authParams = imagekit.getAuthenticationParameters();
     
-    console.log("Auth params generated:", authParams);
-    console.log("ImageKit initialized successfully");
+    console.log("Auth params generated successfully");
     
     // Return the authentication parameters that ImageKit needs
     return NextResponse.json(authParams);
@@ -46,15 +47,39 @@ export async function GET() {
   }
 }
 
-// POST method for file uploads (if you want to handle uploads server-side)
+// POST method for file uploads
 export async function POST(request: Request) {
   try {
+    // Check if ImageKit is available
+    if (!imagekit) {
+      return NextResponse.json({ 
+        error: "ImageKit service unavailable",
+        message: "Please check configuration"
+      }, { status: 503 });
+    }
+
     const formData = await request.formData();
     const file = formData.get('file') as File;
     const username = formData.get('username') as string;
     
     if (!file) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
+    }
+
+    // Validate file type
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      return NextResponse.json({ 
+        error: "Invalid file type. Only JPEG, PNG, GIF, and WebP are allowed" 
+      }, { status: 400 });
+    }
+
+    // Validate file size (5MB limit)
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    if (file.size > maxSize) {
+      return NextResponse.json({ 
+        error: "File too large. Maximum size is 5MB" 
+      }, { status: 400 });
     }
 
     // Get file extension

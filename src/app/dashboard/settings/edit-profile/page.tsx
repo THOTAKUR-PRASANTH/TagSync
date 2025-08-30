@@ -206,28 +206,43 @@ const AvatarUpload = ({ darkMode, currentAvatar, onAvatarChange, userName }: {
       };
       reader.readAsDataURL(file);
 
-             // Upload to your server or ImageKit
-       const formData = new FormData();
-       formData.append('file', file);
-       formData.append('username', userName || 'user');
-       
-       const response = await fetch('/api/updateimg', {
-         method: 'POST',
-         body: formData,
-       });
+      // Upload to your server or ImageKit
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('username', userName || 'user');
+      
+      const response = await fetch('/api/updateimg', {
+        method: 'POST',
+        body: formData,
+      });
 
       if (response.ok) {
         const result = await response.json();
         if (result.url) {
           setPreview(result.url);
           onAvatarChange(result.url);
+        } else {
+          throw new Error('No URL received from upload');
         }
       } else {
-        throw new Error('Upload failed');
+        const errorData = await response.json();
+        throw new Error(errorData.error || errorData.message || 'Upload failed');
       }
     } catch (error) {
       console.error('Upload error:', error);
-      alert('Failed to upload image. Please try again.');
+      const errorMessage = error instanceof Error ? error.message : 'Failed to upload image';
+      
+      // Show user-friendly error message
+      if (errorMessage.includes('File too large')) {
+        alert('Image is too large. Please select an image smaller than 5MB.');
+      } else if (errorMessage.includes('Invalid file type')) {
+        alert('Please select a valid image file (JPEG, PNG, GIF, or WebP).');
+      } else if (errorMessage.includes('ImageKit not configured')) {
+        alert('Image upload service is currently unavailable. Please try again later.');
+      } else {
+        alert(`Upload failed: ${errorMessage}. Please try again.`);
+      }
+      
       // Revert to previous preview
       setPreview(currentAvatar);
     } finally {
@@ -548,17 +563,16 @@ export default function ProfileEditForm() {
               <div className="text-red-500 text-sm mt-1">{validationErrors.name}</div>
             )}
             
-            <InputField
-              icon={<Phone />} 
-              label="Phone Number" 
-              type="tel" 
-              value={formData.phone}
-              onChange={(value) => setFormData({...formData, phone: value})}
-              placeholder="(+91) 1234567890" 
-              darkMode={darkMode} 
-              delay={400}
-              required
-            />
+                           <InputField
+                 icon={<Phone />} 
+                 label="Phone Number" 
+                 type="tel" 
+                 value={formData.phone}
+                 onChange={(value) => setFormData({...formData, phone: value})}
+                 placeholder="(+91) 1234567890 (Optional)" 
+                 darkMode={darkMode} 
+                 delay={400}
+               />
             {validationErrors.phone && (
               <div className="text-red-500 text-sm mt-1">{validationErrors.phone}</div>
             )}
