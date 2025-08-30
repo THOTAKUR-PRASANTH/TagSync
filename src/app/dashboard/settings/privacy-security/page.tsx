@@ -2,15 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Eye, EyeOff, Shield, Palette, Check, X, Lock, Key, Smartphone, Info, Zap, Activity, Clock } from 'lucide-react';
 
-interface PasswordSettingsProps {
-  user: {
-    id: string;
-    name: string;
-    email: string;
-  };
-}
 
-export default function  PasswordSettings({ user }: PasswordSettingsProps)
+
+export default function  PasswordSettings()
 {
   const [theme, setTheme] = useState(1); // Default to Arctic Glass (index 1)
   const [currentPassword, setCurrentPassword] = useState('');
