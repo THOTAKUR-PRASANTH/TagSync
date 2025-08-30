@@ -89,7 +89,7 @@ function Sidebar({ isOpen, onClose, user }: {
         <div className="flex h-full flex-col">
           <div className="flex h-16 items-center justify-between px-6">
             <div className="flex items-center space-x-3">
-               <span className="text-2xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
+              <span className="text-2xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
                 TagSync
               </span>
             </div>
@@ -115,7 +115,7 @@ function Sidebar({ isOpen, onClose, user }: {
           </nav>
 
           <div className="p-4 border-t border-slate-200/80">
-             <a href="/dashboard/settings" className="flex items-center space-x-3 px-2 py-2 rounded-lg hover:bg-slate-200/50 transition-colors group">
+            <a href="/dashboard/settings" className="flex items-center space-x-3 px-2 py-2 rounded-lg hover:bg-slate-200/50 transition-colors group">
               <div className="w-10 h-10 bg-slate-200/50 rounded-full flex items-center justify-center">
                 <User className="w-5 h-5 text-purple-600" />
               </div>
@@ -171,9 +171,9 @@ export default function SecuredLayout({ children, user }: SecuredLayoutProps) {
       >
         <div className="flex items-center justify-between h-16 px-6">
             {!sidebarCollapsed && (
-                 <span className="text-2xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
-                    TagSync
-                </span>
+                <span className="text-2xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
+                  TagSync
+              </span>
             )}
             <button
               onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
@@ -221,7 +221,7 @@ export default function SecuredLayout({ children, user }: SecuredLayoutProps) {
               </div>
             )}
           </a>
-           <button onClick={handleLogout} className={`mt-2 w-full text-left px-3 py-3 text-sm text-red-600 hover:bg-red-500/10 transition-colors flex items-center gap-3 rounded-lg group ${sidebarCollapsed ? 'justify-center' : ''}`} role="menuitem" title={sidebarCollapsed ? 'Logout' : undefined}>
+            <button onClick={handleLogout} className={`mt-2 w-full text-left px-3 py-3 text-sm text-red-600 hover:bg-red-500/10 transition-colors flex items-center gap-3 rounded-lg group ${sidebarCollapsed ? 'justify-center' : ''}`} role="menuitem" title={sidebarCollapsed ? 'Logout' : undefined}>
               <LogOut className="w-5 h-5 flex-shrink-0" />
               {!sidebarCollapsed && (
                 <span className="font-medium truncate">Logout</span>
@@ -243,7 +243,8 @@ export default function SecuredLayout({ children, user }: SecuredLayoutProps) {
             initial={{ scale: 0, y: 100 }}
             animate={{ scale: 1, y: 0 }}
             onClick={() => setSidebarOpen(true)}
-            className="lg:hidden w-14 h-14 flex items-center justify-center rounded-full bg-white/80 backdrop-blur-xl shadow-lg hover:bg-white/90 transition-colors fixed bottom-6 left-6 z-10"
+            // THE ONLY CHANGE IS HERE: z-10 is changed to z-30
+            className="lg:hidden w-14 h-14 flex items-center justify-center rounded-full bg-white/80 backdrop-blur-xl shadow-lg hover:bg-white/90 transition-colors fixed bottom-6 left-6 z-30"
             aria-label="Open menu"
           >
             <Menu className="w-6 h-6 text-slate-600" />
