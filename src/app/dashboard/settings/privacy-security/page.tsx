@@ -10,7 +10,8 @@ interface PasswordSettingsProps {
   };
 }
 
-const PasswordSettings = ({ user }: PasswordSettingsProps) => {
+export default function  PasswordSettings({ user }: PasswordSettingsProps)
+{
   const [theme, setTheme] = useState(1); // Default to Arctic Glass (index 1)
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -256,4 +257,3 @@ const PasswordSettings = ({ user }: PasswordSettingsProps) => {
   );
 }
 
-export default PasswordSettings;
