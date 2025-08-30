@@ -173,6 +173,7 @@ const ProfileHeader = ({ user, darkMode }:ProfileHeaderProps) => {
     </div>
   );
 };
+
 interface QuickSettingCardProps {
   icon: React.ReactElement<any>;
   title: string;
@@ -230,8 +231,6 @@ interface SettingsClientProps {
 
 export default function SettingsClient({user}:SettingsClientProps) {
   const [darkMode, setDarkMode] = useState(false);
-  
- 
 
   const settingsOptions = [
     {
@@ -304,7 +303,7 @@ export default function SettingsClient({user}:SettingsClientProps) {
       }`}>
       
       {/* Animated background elements */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className={`absolute top-1/4 left-1/4 w-96 h-96 rounded-full 
           mix-blend-multiply filter blur-xl animate-pulse transition-all duration-700
           ${darkMode 
@@ -329,7 +328,7 @@ export default function SettingsClient({user}:SettingsClientProps) {
       </div>
 
       {/* Floating particles */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(15)].map((_, i) => (
           <div
             key={i}
@@ -346,10 +345,10 @@ export default function SettingsClient({user}:SettingsClientProps) {
       </div>
 
       {/* Main content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-24">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-32 lg:pb-8">
         
-        {/* Dark mode toggle */}
-        <div className="fixed top-6 right-6 z-30">
+        {/* Dark mode toggle - Hidden on mobile to avoid conflicts */}
+        <div className="hidden lg:block fixed top-6 right-6 z-20">
           <button
             onClick={toggleDarkMode}
             className={`p-3 rounded-full backdrop-blur-lg shadow-lg transition-all duration-300 
@@ -372,17 +371,27 @@ export default function SettingsClient({user}:SettingsClientProps) {
           </button>
         </div>
 
-        {/* Page Title */}
-        <div className="mb-8">
-          <h1 className={`text-4xl sm:text-5xl font-bold mb-2 transition-colors duration-500
-            ${darkMode ? 'text-gray-100' : 'text-slate-900'}`}>
-            Settings
-          </h1>
-          <p className={`text-lg transition-colors duration-500
-            ${darkMode ? 'text-gray-400' : 'text-slate-600'}`}>
-            Customize your experience
-          </p>
+        {/* Mobile dark mode toggle - Positioned to not conflict with hamburger */}
+        <div className="lg:hidden fixed top-6 right-6 z-5">
+          <button
+            onClick={toggleDarkMode}
+            className={`p-2 rounded-full backdrop-blur-lg shadow-lg transition-all duration-300 
+              hover:scale-110 active:scale-95 group
+              ${darkMode 
+                ? 'bg-gray-800/60 border border-gray-700/50 hover:bg-gray-800/80' 
+                : 'bg-white/30 border border-white/40 hover:bg-white/40'
+              }`}
+          >
+            {darkMode ? (
+              <Sun className="w-4 h-4 text-yellow-400 group-hover:text-yellow-300 transition-colors duration-300" />
+            ) : (
+              <Moon className="w-4 h-4 text-slate-700 group-hover:text-slate-800 transition-colors duration-300" />
+            )}
+          </button>
         </div>
+
+       
+       
 
         {/* Profile Header */}
         <ProfileHeader user={user} darkMode={darkMode} />
