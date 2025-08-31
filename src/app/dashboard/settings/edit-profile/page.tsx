@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { User, Phone, Calendar, Upload, Save, Check, Camera, Moon, Sun, ArrowLeft } from 'lucide-react';
-
+import { motion } from 'framer-motion';
 
 
 
@@ -269,7 +269,7 @@ const AvatarUpload = ({ darkMode, currentAvatar, onAvatarChange, userName }: {
           ) : (
             <div className={`w-full h-full flex items-center justify-center text-white text-4xl font-bold
               ${darkMode ? 'bg-gradient-to-br from-gray-700 to-gray-800' : 'bg-gradient-to-br from-gray-200 to-gray-300 text-slate-600'}`}>
-              {userName ? userName.charAt(0).toUpperCase() : 'U'}
+              {userName ? userName.charAt(0).toUpperCase() : 'dora'}
             </div>
           )}
           
@@ -304,6 +304,15 @@ const AvatarUpload = ({ darkMode, currentAvatar, onAvatarChange, userName }: {
     </div>
   );
 };
+
+const contentFadeIn = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
+  };
 
 export default function ProfileEditForm() {
   const [darkMode, setDarkMode] = useState(false);
@@ -477,15 +486,19 @@ export default function ProfileEditForm() {
 
       <div className="relative w-full px-4 sm:px-6 py-8">
         <div className="flex justify-between items-center mb-6">
-          <button onClick={()=>window.location.href = "/dashboard/settings"} className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300
-            hover:scale-105 active:scale-95
-            ${darkMode 
-              ? 'bg-gray-800/40 text-gray-300 hover:bg-gray-800/60' 
-              : 'bg-white/50 text-slate-700 hover:bg-white/70'
-            } backdrop-blur-lg shadow-md`}>
-            <ArrowLeft className="w-4 h-4" />
-            <span className="text-sm font-medium">Back</span>
-          </button>
+        <button
+            onClick={() => window.history.back()}
+            className="inline-flex items-center gap-2 px-4 py-1.5 text-xs sm:text-sm font-medium tracking-wider
+             text-purple-600 uppercase bg-white/40 backdrop-blur-xl 
+             rounded-full border border-purple-300/50 
+             shadow-md shadow-purple-500/10 transition-all duration-300 hover:bg-white/60 
+             hover:shadow-purple-500/30 active:scale-95 sm:px-6 sm:py-2 cursor-pointer"
+          >
+          <ArrowLeft className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1" />
+          Back to Settings
+        </button>
+
+
 
           <button
             onClick={() => setDarkMode(!darkMode)}
@@ -504,16 +517,36 @@ export default function ProfileEditForm() {
           </button>
         </div>
 
-        <div className="text-center mb-10">
-          <h1 className={`text-4xl sm:text-5xl font-bold mb-3 transition-colors duration-500
-            ${darkMode ? 'text-gray-100' : 'text-slate-800'}`}>
-            Edit Profile
-          </h1>
-          <p className={`text-md transition-colors duration-500
-            ${darkMode ? 'text-gray-400' : 'text-slate-600'}`}>
-            Keep your personal information up-to-date
-          </p>
-        </div>
+        {/* Animated Edit Profile Header */}
+<motion.div
+  initial="hidden"
+  whileInView="visible"
+  viewport={{ once: true, amount: 0.3 }}
+  variants={contentFadeIn}
+  className="text-center space-y-4 mb-10"
+>
+  <div>
+    <span className="inline-block px-6 py-2 text-sm font-medium tracking-wider text-purple-600 uppercase bg-white/40 backdrop-blur-xl rounded-full border border-purple-300/50 shadow-lg shadow-purple-500/10">
+      Profile Settings
+    </span>
+  </div>
+
+  <h1 className="text-1xl sm:text-5xl md:text-1xl lg:text-4xl font-bold">
+    <span className={`bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text animate-gradient-text ${darkMode ? 'text-white' : ''}`}>
+      Edit   
+    </span>{' '}
+    <span className={`bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 text-transparent bg-clip-text animate-gradient-text ${darkMode ? 'text-white' : ''}`}>
+      Profile
+    </span>
+  </h1>
+
+  <p className={`text-md transition-colors duration-500 ${
+    darkMode ? 'text-white' : 'text-slate-600'
+  }`}>
+    Keep your personal information up-to-date
+  </p>
+</motion.div>
+
 
         <div className={`backdrop-blur-xl rounded-2xl p-6 sm:p-8 shadow-xl transition-all duration-500
           mx-auto max-w-4xl hover:shadow-2xl hover:scale-[1.01]
@@ -613,7 +646,7 @@ export default function ProfileEditForm() {
               onClick={handleSave}
               disabled={isSaving}
               className={`relative w-full sm:w-auto px-8 py-3 rounded-lg font-semibold text-white shadow-lg transition-all duration-300
-                transform hover:scale-105 active:scale-95 overflow-hidden group
+                transform hover:scale-105 active:scale-95 overflow-hidden group cursor-pointer
                 ${isSaving ? 'bg-gray-400 cursor-not-allowed' : (darkMode 
                     ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700' 
                     : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600')}`}
@@ -635,8 +668,10 @@ export default function ProfileEditForm() {
               </div>
             </button>
 
-            <button className={`w-full sm:w-auto px-8 py-3 rounded-lg font-semibold border-2 transition-all duration-300
-              transform hover:scale-105 active:scale-95
+            <button 
+             onClick={() => window.history.back()}
+              className={`w-full sm:w-auto px-8 py-3 rounded-lg font-semibold border-2 transition-all duration-300
+              transform hover:scale-105 active:scale-95 cursor-pointer
               ${darkMode 
                 ? 'border-gray-600 text-gray-300 hover:bg-gray-800/50' 
                 : 'border-slate-300 text-slate-700 hover:bg-white/50'
@@ -662,3 +697,14 @@ export default function ProfileEditForm() {
     </div>
   );
 }
+
+/*
+@keyframes gradientText {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+.animate-gradient-text {
+  background-size: 200% 200%;
+  animation: gradientText 3s ease-in-out infinite;
+}
+*/

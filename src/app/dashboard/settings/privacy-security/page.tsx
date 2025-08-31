@@ -80,10 +80,17 @@ export default function  PasswordSettings()
       {/* Header */}
       <header className="relative z-10 p-4">
         <div className="flex items-center justify-between max-w-7xl mx-auto">
-          <button onClick={() => window.history.back()} className={`flex items-center space-x-2 px-4 py-2 rounded-xl border transition-all duration-300 hover:scale-105 active:scale-95 group ${currentTheme.card} ${currentTheme.cardHover} ${currentTheme.text} shadow-lg ${currentTheme.glow}`}>
-            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300" />
-            <span className="font-semibold text-sm">Back to Settings</span>
-          </button>
+           <button
+                      onClick={() => window.history.back()}
+                      className="inline-flex items-center gap-2 px-4 py-1.5 
+                      text-xs sm:text-sm font-medium tracking-wider 
+                      text-purple-600 uppercase bg-white/40 backdrop-blur-xl rounded-full border 
+                      border-purple-300/50 shadow-md shadow-purple-500/10 transition-all duration-300 
+                      hover:bg-white/60 hover:shadow-purple-500/30 active:scale-95 sm:px-6 sm:py-2 cursor-pointer"
+            >
+                   <ArrowLeft className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1" />
+                    Back to Settings
+            </button>
           <div className="flex items-center gap-3">
             <div className={`px-3 py-1.5 rounded-lg ${currentTheme.card} border font-medium text-sm ${currentTheme.textSecondary}`}>{currentTheme.name}</div>
             <button onClick={cycleTheme} className={`p-2.5 rounded-xl border transition-all duration-300 hover:scale-110 active:scale-95 group ${currentTheme.card} ${currentTheme.cardHover} ${currentTheme.text} shadow-lg ${currentTheme.glow}`}>
